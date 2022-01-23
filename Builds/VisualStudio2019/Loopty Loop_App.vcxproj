@@ -139,6 +139,11 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Layout\MainLayoutComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Layout\Mixer\Mixer.cpp"/>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp"/>
+    <ClCompile Include="..\..\Source\Layout\Tracks\Track\Track.cpp"/>
+    <ClCompile Include="..\..\Source\Layout\Tracks\Tracks.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\Source\MainComponent.cpp"/>
     <ClCompile Include="..\..\..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2197,6 +2202,11 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_gui_extra.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Layout\MainLayoutComponent.h"/>
+    <ClInclude Include="..\..\Source\Layout\Mixer\Mixer.h"/>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h"/>
+    <ClInclude Include="..\..\Source\Layout\Tracks\Track\Track.h"/>
+    <ClInclude Include="..\..\Source\Layout\Tracks\Tracks.h"/>
     <ClInclude Include="..\..\Source\MainComponent.h"/>
     <ClInclude Include="..\..\..\..\..\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\..\..\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>

@@ -2,6 +2,21 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Loopty Loop\Source\Layout\Mixer">
+      <UniqueIdentifier>{48CA6E2E-0CD0-F9C1-F228-26E6DF73DD9F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls">
+      <UniqueIdentifier>{7F490333-F0A4-BF32-0123-AFD8057595CB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\Tracks\Track">
+      <UniqueIdentifier>{A0593974-FA74-BADB-9EE7-8FF620E194DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\Tracks">
+      <UniqueIdentifier>{892FCB64-12A3-7459-2EE0-445F2C4AF066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout">
+      <UniqueIdentifier>{B9898A5C-4190-953D-BD4E-EC88C4EA942A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Loopty Loop\Source">
       <UniqueIdentifier>{DDADDC34-9BA4-50FB-9593-805BFC1D3A27}</UniqueIdentifier>
     </Filter>
@@ -463,6 +478,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\Layout\MainLayoutComponent.cpp">
+      <Filter>Loopty Loop\Source\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\Mixer\Mixer.cpp">
+      <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\Tracks\Track\Track.cpp">
+      <Filter>Loopty Loop\Source\Layout\Tracks\Track</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\Tracks\Tracks.cpp">
+      <Filter>Loopty Loop\Source\Layout\Tracks</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>Loopty Loop\Source</Filter>
     </ClCompile>
@@ -2673,6 +2703,21 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\Layout\MainLayoutComponent.h">
+      <Filter>Loopty Loop\Source\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\Mixer\Mixer.h">
+      <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\Tracks\Track\Track.h">
+      <Filter>Loopty Loop\Source\Layout\Tracks\Track</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\Tracks\Tracks.h">
+      <Filter>Loopty Loop\Source\Layout\Tracks</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>Loopty Loop\Source</Filter>
     </ClInclude>

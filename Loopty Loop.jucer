@@ -4,6 +4,32 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="clywlA" name="Loopty Loop">
     <GROUP id="{533D952B-D885-DA6A-D561-3FED38AB52D1}" name="Source">
+      <GROUP id="{3A58F50F-3FA5-6254-B973-FE2BC95C94F0}" name="Features"/>
+      <GROUP id="{A8270396-9C61-F323-348A-6E670243D2C8}" name="CoreAudio"/>
+      <GROUP id="{F3F75FD5-81F9-7FDE-6AE4-81D722934A43}" name="Layout">
+        <FILE id="R8IkmS" name="MainLayoutComponent.cpp" compile="1" resource="0"
+              file="Source/Layout/MainLayoutComponent.cpp"/>
+        <FILE id="D0fX2a" name="MainLayoutComponent.h" compile="0" resource="0"
+              file="Source/Layout/MainLayoutComponent.h"/>
+        <GROUP id="{936DAF7E-7CCE-1568-755A-8573E74285D6}" name="Mixer">
+          <FILE id="iIbgvy" name="Mixer.cpp" compile="1" resource="0" file="Source/Layout/Mixer/Mixer.cpp"/>
+          <FILE id="LSg2vw" name="Mixer.h" compile="0" resource="0" file="Source/Layout/Mixer/Mixer.h"/>
+        </GROUP>
+        <GROUP id="{66C9DE00-28BD-0586-02E2-078EBA6A2896}" name="TransportControls">
+          <FILE id="KuJirX" name="TransportControls.cpp" compile="1" resource="0"
+                file="Source/Layout/TransportControls/TransportControls.cpp"/>
+          <FILE id="v8IIqc" name="TransportControls.h" compile="0" resource="0"
+                file="Source/Layout/TransportControls/TransportControls.h"/>
+        </GROUP>
+        <GROUP id="{3B1A2DAE-8904-BCFF-B88B-596C0A1C67C8}" name="Tracks">
+          <GROUP id="{DA4647D9-6B98-E195-2640-EBE3938DF0F4}" name="Track">
+            <FILE id="E6viNQ" name="Track.cpp" compile="1" resource="0" file="Source/Layout/Tracks/Track/Track.cpp"/>
+            <FILE id="KVBhW8" name="Track.h" compile="0" resource="0" file="Source/Layout/Tracks/Track/Track.h"/>
+          </GROUP>
+          <FILE id="hzHaXy" name="Tracks.cpp" compile="1" resource="0" file="Source/Layout/Tracks/Tracks.cpp"/>
+          <FILE id="E9fy3c" name="Tracks.h" compile="0" resource="0" file="Source/Layout/Tracks/Tracks.h"/>
+        </GROUP>
+      </GROUP>
       <FILE id="PlxX8n" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="uUI6gn" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="BRScCf" name="MainComponent.cpp" compile="1" resource="0"
