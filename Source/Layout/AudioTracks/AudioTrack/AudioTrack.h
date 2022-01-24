@@ -9,3 +9,24 @@
 */
 
 #pragma once
+
+#include <JuceHeader.h>
+
+class AudioTrack : public juce::Component
+{
+public:
+    //==========================================================================
+    AudioTrack();
+    ~AudioTrack();
+
+    //==========================================================================
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+
+private:
+
+    juce::String trackNumber;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTrack)
+
+};

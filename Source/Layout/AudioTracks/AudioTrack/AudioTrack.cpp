@@ -9,3 +9,25 @@
 */
 
 #include "AudioTrack.h"
+
+//==============================================================================
+AudioTrack::AudioTrack()
+{
+
+}
+
+AudioTrack::~AudioTrack()
+{
+
+}
+
+//==============================================================================
+void AudioTrack::paint(juce::Graphics& g)
+{
+
+}
+
+void AudioTrack::resized()
+{
+
+}
