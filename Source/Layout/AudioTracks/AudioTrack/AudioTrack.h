@@ -3,7 +3,7 @@
 
     AudioTrack.h
     Created: 23 Jan 2022 1:39:42pm
-    Author:  aaron
+    Author:  Aaron Ennis
 
   ==============================================================================
 */
