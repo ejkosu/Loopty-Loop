@@ -8,11 +8,11 @@
     <Filter Include="Loopty Loop\Source\Layout\TransportControls">
       <UniqueIdentifier>{7F490333-F0A4-BF32-0123-AFD8057595CB}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Loopty Loop\Source\Layout\Tracks\Track">
-      <UniqueIdentifier>{A0593974-FA74-BADB-9EE7-8FF620E194DE}</UniqueIdentifier>
+    <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack">
+      <UniqueIdentifier>{A59E46FA-F025-F2B6-98C7-F5017057AC48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Loopty Loop\Source\Layout\Tracks">
-      <UniqueIdentifier>{892FCB64-12A3-7459-2EE0-445F2C4AF066}</UniqueIdentifier>
+    <Filter Include="Loopty Loop\Source\Layout\AudioTracks">
+      <UniqueIdentifier>{0670E579-3C06-D841-2B6A-70BBB1F57DE1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Loopty Loop\Source\Layout">
       <UniqueIdentifier>{B9898A5C-4190-953D-BD4E-EC88C4EA942A}</UniqueIdentifier>
@@ -487,11 +487,11 @@
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Layout\Tracks\Track\Track.cpp">
-      <Filter>Loopty Loop\Source\Layout\Tracks\Track</Filter>
+    <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\AudioTrack.cpp">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Layout\Tracks\Tracks.cpp">
-      <Filter>Loopty Loop\Source\Layout\Tracks</Filter>
+    <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTracks.cpp">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>Loopty Loop\Source</Filter>
@@ -2712,11 +2712,11 @@
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Layout\Tracks\Track\Track.h">
-      <Filter>Loopty Loop\Source\Layout\Tracks\Track</Filter>
+    <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\AudioTrack.h">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\Layout\Tracks\Tracks.h">
-      <Filter>Loopty Loop\Source\Layout\Tracks</Filter>
+    <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTracks.h">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\MainComponent.h">
       <Filter>Loopty Loop\Source</Filter>

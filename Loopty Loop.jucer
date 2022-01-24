@@ -21,13 +21,13 @@
           <FILE id="v8IIqc" name="TransportControls.h" compile="0" resource="0"
                 file="Source/Layout/TransportControls/TransportControls.h"/>
         </GROUP>
-        <GROUP id="{3B1A2DAE-8904-BCFF-B88B-596C0A1C67C8}" name="Tracks">
-          <GROUP id="{DA4647D9-6B98-E195-2640-EBE3938DF0F4}" name="Track">
-            <FILE id="E6viNQ" name="Track.cpp" compile="1" resource="0" file="Source/Layout/Tracks/Track/Track.cpp"/>
-            <FILE id="KVBhW8" name="Track.h" compile="0" resource="0" file="Source/Layout/Tracks/Track/Track.h"/>
+        <GROUP id="{3B1A2DAE-8904-BCFF-B88B-596C0A1C67C8}" name="AudioTracks">
+          <GROUP id="{DA4647D9-6B98-E195-2640-EBE3938DF0F4}" name="AudioTrack">
+            <FILE id="E6viNQ" name="AudioTrack.cpp" compile="1" resource="0" file="Source/Layout/AudioTracks/AudioTrack/AudioTrack.cpp"/>
+            <FILE id="KVBhW8" name="AudioTrack.h" compile="0" resource="0" file="Source/Layout/AudioTracks/AudioTrack/AudioTrack.h"/>
           </GROUP>
-          <FILE id="hzHaXy" name="Tracks.cpp" compile="1" resource="0" file="Source/Layout/Tracks/Tracks.cpp"/>
-          <FILE id="E9fy3c" name="Tracks.h" compile="0" resource="0" file="Source/Layout/Tracks/Tracks.h"/>
+          <FILE id="hzHaXy" name="AudioTracks.cpp" compile="1" resource="0" file="Source/Layout/AudioTracks/AudioTracks.cpp"/>
+          <FILE id="E9fy3c" name="AudioTracks.h" compile="0" resource="0" file="Source/Layout/AudioTracks/AudioTracks.h"/>
         </GROUP>
       </GROUP>
       <FILE id="PlxX8n" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
