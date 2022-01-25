@@ -11,12 +11,14 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "./WaveformWindow/WaveformWindow.h"
+#include "./TrackControlButtons/TrackControlButtons.h"
 
 class AudioTrack : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTrack();
+    AudioTrack(int t);
     ~AudioTrack();
 
     //==========================================================================
@@ -25,7 +27,10 @@ public:
 
 private:
 
-    juce::String trackNumber;
+    int trackNumber;
+    juce::Label trackLabel;
+    WaveformWindow trackWaveformWindow;
+    TrackControlButtons controlButtonsArea;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTrack)
 

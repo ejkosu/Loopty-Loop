@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    AudioTracks.h
-    Created: 23 Jan 2022 1:33:43pm
+    TrackControlButtons.h
+    Created: 24 Jan 2022 7:51:52pm
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,14 +11,13 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./AudioTrack/AudioTrack.h"
 
-class AudioTracks : public juce::Component
+class TrackControlButtons : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTracks();
-    ~AudioTracks();
+    TrackControlButtons();
+    ~TrackControlButtons();
 
     //==========================================================================
     void paint(juce::Graphics& g) override;
@@ -26,10 +25,10 @@ public:
 
 private:
 
-    AudioTrack* audioTrack01;
-    AudioTrack* audioTrack02;
-    AudioTrack* audioTrack03;
-    AudioTrack* audioTrack04;
+    juce::ToggleButton* armBtn;
+    juce::ToggleButton* muteBtn;
+    juce::ToggleButton* revBtn;
+    juce::ToggleButton* soloBtn;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTracks)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackControlButtons)
 };

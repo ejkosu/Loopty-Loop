@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    AudioTracks.h
-    Created: 23 Jan 2022 1:33:43pm
+    WaveformWindow.h
+    Created: 24 Jan 2022 7:51:01pm
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,25 +11,21 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./AudioTrack/AudioTrack.h"
 
-class AudioTracks : public juce::Component
+class WaveformWindow : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTracks();
-    ~AudioTracks();
+    WaveformWindow();
+    ~WaveformWindow();
 
     //==========================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
+    
+    juce::Component waveformWindow;
 
-    AudioTrack* audioTrack01;
-    AudioTrack* audioTrack02;
-    AudioTrack* audioTrack03;
-    AudioTrack* audioTrack04;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTracks)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveformWindow)
 };

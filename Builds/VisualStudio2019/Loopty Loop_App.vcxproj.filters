@@ -8,6 +8,12 @@
     <Filter Include="Loopty Loop\Source\Layout\TransportControls">
       <UniqueIdentifier>{7F490333-F0A4-BF32-0123-AFD8057595CB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons">
+      <UniqueIdentifier>{914EE11D-0F73-9F6F-6A1B-72D4DF49447B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack\WaveformWindow">
+      <UniqueIdentifier>{B1B8CFE9-D98F-64B5-7A32-2C9C08837770}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack">
       <UniqueIdentifier>{A59E46FA-F025-F2B6-98C7-F5017057AC48}</UniqueIdentifier>
     </Filter>
@@ -486,6 +492,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons\TrackControlButtons.cpp">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\WaveformWindow\WaveformWindow.cpp">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\WaveformWindow</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\AudioTrack.cpp">
       <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack</Filter>
@@ -2711,6 +2723,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons\TrackControlButtons.h">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\WaveformWindow\WaveformWindow.h">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\WaveformWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\AudioTrack.h">
       <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack</Filter>

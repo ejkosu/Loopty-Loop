@@ -23,6 +23,18 @@
         </GROUP>
         <GROUP id="{3B1A2DAE-8904-BCFF-B88B-596C0A1C67C8}" name="AudioTracks">
           <GROUP id="{DA4647D9-6B98-E195-2640-EBE3938DF0F4}" name="AudioTrack">
+            <GROUP id="{C34CA124-C5CD-A315-D501-17B9CD77D165}" name="TrackControlButtons">
+              <FILE id="ZCNdzS" name="TrackControlButtons.cpp" compile="1" resource="0"
+                    file="Source/Layout/AudioTracks/AudioTrack/TrackControlButtons/TrackControlButtons.cpp"/>
+              <FILE id="tJufSQ" name="TrackControlButtons.h" compile="0" resource="0"
+                    file="Source/Layout/AudioTracks/AudioTrack/TrackControlButtons/TrackControlButtons.h"/>
+            </GROUP>
+            <GROUP id="{2094C339-E987-3151-0755-909328C89894}" name="WaveformWindow">
+              <FILE id="wu9iND" name="WaveformWindow.cpp" compile="1" resource="0"
+                    file="Source/Layout/AudioTracks/AudioTrack/WaveformWindow/WaveformWindow.cpp"/>
+              <FILE id="vVS3we" name="WaveformWindow.h" compile="0" resource="0"
+                    file="Source/Layout/AudioTracks/AudioTrack/WaveformWindow/WaveformWindow.h"/>
+            </GROUP>
             <FILE id="E6viNQ" name="AudioTrack.cpp" compile="1" resource="0" file="Source/Layout/AudioTracks/AudioTrack/AudioTrack.cpp"/>
             <FILE id="KVBhW8" name="AudioTrack.h" compile="0" resource="0" file="Source/Layout/AudioTracks/AudioTrack/AudioTrack.h"/>
           </GROUP>
