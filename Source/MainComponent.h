@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "./Layout/MainLayoutComponent.h"
 
 //==============================================================================
 /*
@@ -24,9 +25,8 @@ public:
     void resized() override;
 
 private:
-    //==============================================================================
-    // Your private member variables go here...
 
+    MainLayoutComponent mainLayout;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
