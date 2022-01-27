@@ -17,7 +17,7 @@ AudioTrack::AudioTrack(int t)
     addAndMakeVisible(trackLabel);
     trackLabel.setFont(juce::Font (30.0f, juce::Font::bold));
     trackLabel.setText(juce::String(t), juce::dontSendNotification);
-    trackLabel.setColour(juce::Label::textColourId, juce::Colours::black);
+    trackLabel.setColour(juce::Label::textColourId, juce::Colours::lightgrey);
     trackLabel.setJustificationType(juce::Justification::centredLeft);
     
     addAndMakeVisible(trackWaveformWindow);

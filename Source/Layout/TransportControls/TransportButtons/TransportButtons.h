@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    TransportControls.h
-    Created: 23 Jan 2022 1:42:21pm
+    TransportButtons.h
+    Created: 26 Jan 2022 11:40:10am
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,14 +11,17 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./TransportButtons/TransportButtons.h"
+#include "./PlayButton/PlayButton.h"
+#include "./RecordButton/RecordButton.h"
+#include "./RewindButton/RewindButton.h"
+#include "./StopButton/StopButton.h"
 
-class TransportControls : public juce::Component
+class TransportButtons : public juce::Component
 {
 public:
     //==========================================================================
-    TransportControls();
-    ~TransportControls();
+    TransportButtons();
+    ~TransportButtons();
 
     //==========================================================================
     void paint(juce::Graphics& g) override;
@@ -26,7 +29,11 @@ public:
 
 private:
 
-    TransportButtons transportButtons;
+    RewindButton* rewindBtn;
+    StopButton* stopBtn;
+    PlayButton* playBtn;
+    RecordButton* recordBtn;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportButtons)
 };

@@ -5,6 +5,21 @@
     <Filter Include="Loopty Loop\Source\Layout\Mixer">
       <UniqueIdentifier>{48CA6E2E-0CD0-F9C1-F228-26E6DF73DD9F}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls\TransportButtons\RecordButton">
+      <UniqueIdentifier>{7355AD4C-8B88-45A2-9721-A92FF22D2640}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls\TransportButtons\PlayButton">
+      <UniqueIdentifier>{222592F5-4912-B538-D547-4BB80FBA2EE2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls\TransportButtons\StopButton">
+      <UniqueIdentifier>{CC4B623D-9CD6-CC6C-449F-CF94850FFD56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls\TransportButtons\RewindButton">
+      <UniqueIdentifier>{B7B8106E-552D-5CF9-3051-A55FA8EFCF30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\TransportControls\TransportButtons">
+      <UniqueIdentifier>{B7B80BF3-2D79-176E-5324-8F5ED9AF3E12}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Loopty Loop\Source\Layout\TransportControls">
       <UniqueIdentifier>{7F490333-F0A4-BF32-0123-AFD8057595CB}</UniqueIdentifier>
     </Filter>
@@ -489,6 +504,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\Mixer\Mixer.cpp">
       <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\RecordButton\RecordButton.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\RecordButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\PlayButton\PlayButton.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\PlayButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\StopButton\StopButton.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\StopButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\RewindButton\RewindButton.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\RewindButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\TransportButtons.cpp">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
@@ -2720,6 +2750,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\Mixer\Mixer.h">
       <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\RecordButton\RecordButton.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\RecordButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\PlayButton\PlayButton.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\PlayButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\StopButton\StopButton.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\StopButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\RewindButton\RewindButton.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons\RewindButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\TransportButtons.h">
+      <Filter>Loopty Loop\Source\Layout\TransportControls\TransportButtons</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>

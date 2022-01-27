@@ -16,6 +16,30 @@
           <FILE id="LSg2vw" name="Mixer.h" compile="0" resource="0" file="Source/Layout/Mixer/Mixer.h"/>
         </GROUP>
         <GROUP id="{66C9DE00-28BD-0586-02E2-078EBA6A2896}" name="TransportControls">
+          <GROUP id="{AAB88791-9CFE-C95C-54E6-3F11C742F3DC}" name="TransportButtons">
+            <GROUP id="{99199D01-D74C-7BA8-4B4F-5C43A8EF0B66}" name="RecordButton">
+              <FILE id="Ecp5HQ" name="RecordButton.cpp" compile="1" resource="0"
+                    file="Source/Layout/TransportControls/TransportButtons/RecordButton/RecordButton.cpp"/>
+              <FILE id="Fom7lv" name="RecordButton.h" compile="0" resource="0" file="Source/Layout/TransportControls/TransportButtons/RecordButton/RecordButton.h"/>
+            </GROUP>
+            <GROUP id="{0377CB74-E84D-8E14-854C-E0A6AE30BCC1}" name="PlayButton">
+              <FILE id="Zh5DUU" name="PlayButton.cpp" compile="1" resource="0" file="Source/Layout/TransportControls/TransportButtons/PlayButton/PlayButton.cpp"/>
+              <FILE id="kuC8Gy" name="PlayButton.h" compile="0" resource="0" file="Source/Layout/TransportControls/TransportButtons/PlayButton/PlayButton.h"/>
+            </GROUP>
+            <GROUP id="{6693C776-E280-9B69-9727-F2AE68349ECA}" name="StopButton">
+              <FILE id="gYYDXH" name="StopButton.cpp" compile="1" resource="0" file="Source/Layout/TransportControls/TransportButtons/StopButton/StopButton.cpp"/>
+              <FILE id="rardHM" name="StopButton.h" compile="0" resource="0" file="Source/Layout/TransportControls/TransportButtons/StopButton/StopButton.h"/>
+            </GROUP>
+            <GROUP id="{F27B04D2-56EE-2C2D-362D-486BC446A553}" name="RewindButton">
+              <FILE id="nRONuP" name="RewindButton.cpp" compile="1" resource="0"
+                    file="Source/Layout/TransportControls/TransportButtons/RewindButton/RewindButton.cpp"/>
+              <FILE id="tl9CQ1" name="RewindButton.h" compile="0" resource="0" file="Source/Layout/TransportControls/TransportButtons/RewindButton/RewindButton.h"/>
+            </GROUP>
+            <FILE id="oL3dDd" name="TransportButtons.cpp" compile="1" resource="0"
+                  file="Source/Layout/TransportControls/TransportButtons/TransportButtons.cpp"/>
+            <FILE id="aZAcyl" name="TransportButtons.h" compile="0" resource="0"
+                  file="Source/Layout/TransportControls/TransportButtons/TransportButtons.h"/>
+          </GROUP>
           <FILE id="KuJirX" name="TransportControls.cpp" compile="1" resource="0"
                 file="Source/Layout/TransportControls/TransportControls.cpp"/>
           <FILE id="v8IIqc" name="TransportControls.h" compile="0" resource="0"

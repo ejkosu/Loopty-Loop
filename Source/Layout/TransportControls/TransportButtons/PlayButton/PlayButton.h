@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    TransportControls.h
-    Created: 23 Jan 2022 1:42:21pm
+    PlayButton.h
+    Created: 26 Jan 2022 1:59:12pm
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,22 +11,18 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./TransportButtons/TransportButtons.h"
 
-class TransportControls : public juce::Component
+class PlayButton : public juce::ShapeButton
 {
 public:
     //==========================================================================
-    TransportControls();
-    ~TransportControls();
+    PlayButton(juce::String& name, juce::Colour normalColour, juce::Colour overColour, juce::Colour downColour);
+    ~PlayButton();
 
     //==========================================================================
-    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
 
-    TransportButtons transportButtons;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PlayButton)
 };
