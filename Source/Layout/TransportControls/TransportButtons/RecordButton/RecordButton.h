@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    TransportControls.h
-    Created: 23 Jan 2022 1:42:21pm
+    RecordButton.h
+    Created: 26 Jan 2022 1:58:46pm
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,22 +11,18 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./TransportButtons/TransportButtons.h"
 
-class TransportControls : public juce::Component
+class RecordButton : public juce::ShapeButton
 {
 public:
     //==========================================================================
-    TransportControls();
-    ~TransportControls();
+    RecordButton(juce::String& name, juce::Colour normalColour, juce::Colour overColour, juce::Colour downColour);
+    ~RecordButton();
 
     //==========================================================================
-    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
 
-    TransportButtons transportButtons;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(RecordButton)
 };
