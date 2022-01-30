@@ -17,6 +17,8 @@ Knob::Knob(juce::String& knobName, int trackNumber)
     addAndMakeVisible(*knob);
     knob->setSliderStyle(juce::Slider::SliderStyle::Rotary);
     knob->setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
+    knob->setRange(-1.0f, 1.0f, 0.1f);
+    knob->setValue(0.0f);
 
     knobLabel = new juce::Label(knobName, knobName);
     addAndMakeVisible(*knobLabel);
