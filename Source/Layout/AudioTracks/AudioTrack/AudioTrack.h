@@ -13,6 +13,7 @@
 #include <JuceHeader.h>
 #include "./WaveformWindow/WaveformWindow.h"
 #include "./TrackControlButtons/TrackControlButtons.h"
+#include "./Knob/Knob.h"
 
 class AudioTrack : public juce::Component
 {
@@ -31,6 +32,8 @@ private:
     juce::Label trackLabel;
     WaveformWindow trackWaveformWindow;
     TrackControlButtons controlButtonsArea;
+    Knob* panKnob;
+    Knob* slipKnob;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTrack)
 

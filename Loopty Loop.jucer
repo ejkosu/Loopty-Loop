@@ -47,6 +47,10 @@
         </GROUP>
         <GROUP id="{3B1A2DAE-8904-BCFF-B88B-596C0A1C67C8}" name="AudioTracks">
           <GROUP id="{DA4647D9-6B98-E195-2640-EBE3938DF0F4}" name="AudioTrack">
+            <GROUP id="{2E73C9A1-60AE-9974-CE41-720CCBF583D8}" name="Knob">
+              <FILE id="dmfKbr" name="Knob.cpp" compile="1" resource="0" file="Source/Layout/AudioTracks/AudioTrack/Knob/Knob.cpp"/>
+              <FILE id="V6PL5O" name="Knob.h" compile="0" resource="0" file="Source/Layout/AudioTracks/AudioTrack/Knob/Knob.h"/>
+            </GROUP>
             <GROUP id="{C34CA124-C5CD-A315-D501-17B9CD77D165}" name="TrackControlButtons">
               <FILE id="ZCNdzS" name="TrackControlButtons.cpp" compile="1" resource="0"
                     file="Source/Layout/AudioTracks/AudioTrack/TrackControlButtons/TrackControlButtons.cpp"/>

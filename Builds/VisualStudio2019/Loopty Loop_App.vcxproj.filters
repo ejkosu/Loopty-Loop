@@ -23,6 +23,9 @@
     <Filter Include="Loopty Loop\Source\Layout\TransportControls">
       <UniqueIdentifier>{7F490333-F0A4-BF32-0123-AFD8057595CB}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack\Knob">
+      <UniqueIdentifier>{BEF2887D-CA98-1A0E-2905-AB7E2A971654}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons">
       <UniqueIdentifier>{914EE11D-0F73-9F6F-6A1B-72D4DF49447B}</UniqueIdentifier>
     </Filter>
@@ -522,6 +525,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportControls.cpp">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\Knob\Knob.cpp">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\Knob</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons\TrackControlButtons.cpp">
       <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons</Filter>
@@ -2768,6 +2774,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportControls.h">
       <Filter>Loopty Loop\Source\Layout\TransportControls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\Knob\Knob.h">
+      <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\Knob</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons\TrackControlButtons.h">
       <Filter>Loopty Loop\Source\Layout\AudioTracks\AudioTrack\TrackControlButtons</Filter>
