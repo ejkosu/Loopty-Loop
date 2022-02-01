@@ -11,12 +11,12 @@
 #include "AudioTracks.h"
 
 //==============================================================================
-AudioTracks::AudioTracks()
+AudioTracks::AudioTracks(juce::AudioProcessorValueTreeState& vts)
 {
-    this->audioTrack01 = new AudioTrack(1);
-    this->audioTrack02 = new AudioTrack(2);
-    this->audioTrack03 = new AudioTrack(3);
-    this->audioTrack04 = new AudioTrack(4);
+    this->audioTrack01 = new AudioTrack(1, vts);
+    this->audioTrack02 = new AudioTrack(2, vts);
+    this->audioTrack03 = new AudioTrack(3, vts);
+    this->audioTrack04 = new AudioTrack(4, vts);
     addAndMakeVisible(*audioTrack01);
     addAndMakeVisible(*audioTrack02);
     addAndMakeVisible(*audioTrack03);

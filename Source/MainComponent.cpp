@@ -1,7 +1,8 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent()
+MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
+    : mainLayout(vts)
 {
     addAndMakeVisible(mainLayout);
     // Make sure you set the size of the component after

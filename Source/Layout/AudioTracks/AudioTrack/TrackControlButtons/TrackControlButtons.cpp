@@ -11,16 +11,34 @@
 #include "TrackControlButtons.h"
 
 //==============================================================================
-TrackControlButtons::TrackControlButtons()
+TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeState& vts)
+    : trackId(id), parameters(vts)
 {
     this->armBtn = new juce::ToggleButton("Arm");
     this->muteBtn = new juce::ToggleButton("Mute");
-    this->revBtn = new juce::ToggleButton("Rev");
+    // "Rev" text changed for demonstration of ValueTreeState
+    this->revBtn = new juce::ToggleButton("Rev False");
     this->soloBtn = new juce::ToggleButton("Solo");
+
+    // ValueTreeState attachments
+    armAttachment.reset(new ButtonAttachment(parameters,
+                                             "arm" + std::to_string(trackId),
+                                             *armBtn));
+    muteAttachment.reset(new ButtonAttachment(parameters,
+                                              "mute" + std::to_string(trackId),
+                                              *muteBtn));
+    revAttachment.reset(new ButtonAttachment(parameters,
+                                             "rev" + std::to_string(trackId),
+                                             *revBtn));
+    soloAttachment.reset(new ButtonAttachment(parameters,
+                                              "solo" + std::to_string(trackId),
+                                              *soloBtn));
+
     this->armBtn->changeWidthToFitText();
     this->muteBtn->changeWidthToFitText();
     this->soloBtn->changeWidthToFitText();
     this->revBtn->changeWidthToFitText();
+
     addAndMakeVisible(*armBtn);
     addAndMakeVisible(*muteBtn);
     addAndMakeVisible(*revBtn);
@@ -53,5 +71,11 @@ void TrackControlButtons::paint(juce::Graphics& g)
 
 void TrackControlButtons::resized()
 {
-
+    // Demonstration of ValueTreeState, can remove
+    if (parameters.getParameterAsValue("rev" + std::to_string(trackId)) == true) {
+        revBtn->setButtonText("Rev True");
+    }
+    else {
+        revBtn->setButtonText("Rev False");
+    }
 }

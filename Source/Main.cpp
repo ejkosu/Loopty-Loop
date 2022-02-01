@@ -14,6 +14,7 @@
 
 #include <JuceHeader.h>
 #include "MainComponent.h"
+#include "AudioProcessor.h"
 
 //==============================================================================
 class LooptyLoopApplication     :   public juce::JUCEApplication
@@ -30,8 +31,27 @@ public:
     void initialise(const juce::String& commandLine) override
     {
         // This method is where you should put your application's initialisation code.
+        audioProcessor.reset(new LooptyLoopAudioProcessor());
+        parameters.reset(new juce::AudioProcessorValueTreeState(
+            *audioProcessor,
+            nullptr,
+            juce::Identifier("VTS"),
+            {
+                std::make_unique<juce::AudioParameterBool>("rev1",           // parameterID
+                                                           "Reverse 1",      // parameter name
+                                                           false),           // default value
+                std::make_unique<juce::AudioParameterBool>("rev2",
+                                                           "Reverse 2",
+                                                           false),
+                std::make_unique<juce::AudioParameterBool>("rev3",
+                                                           "Reverse 3",
+                                                           false),
+                std::make_unique<juce::AudioParameterBool>("rev4",
+                                                           "Reverse 4",
+                                                           false)
+            }));
 
-        mainWindow.reset (new MainWindow (getApplicationName()));
+        mainWindow.reset(new MainWindow(getApplicationName(), *parameters));
     }
 
     void shutdown() override
@@ -64,14 +84,15 @@ public:
     class MainWindow    :   public juce::DocumentWindow
     {
     public:
-        MainWindow (juce::String name)
+        MainWindow (juce::String name, juce::AudioProcessorValueTreeState& vts)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
-                              DocumentWindow::allButtons)
+                              DocumentWindow::allButtons),
+            parameters(vts)
         {
             setUsingNativeTitleBar(true);
-            setContentOwned(new MainComponent(), true);
+            setContentOwned(new MainComponent(parameters), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
@@ -99,11 +120,14 @@ public:
         */
 
     private:
+        juce::AudioProcessorValueTreeState& parameters;
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
     };
 
 private:
     std::unique_ptr<MainWindow> mainWindow;
+    std::unique_ptr<LooptyLoopAudioProcessor> audioProcessor;
+    std::unique_ptr<juce::AudioProcessorValueTreeState> parameters;
 };
 
 //==============================================================================
