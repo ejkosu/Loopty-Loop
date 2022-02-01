@@ -1,7 +1,8 @@
 /*
   ==============================================================================
 
-    This file contains the basic framework code for a JUCE processor.
+    In this application, AudioProcessor is only used to
+    hold the AudioProcessorValueTreeState.
 
   ==============================================================================
 */
@@ -70,14 +71,10 @@ void LooptyLoopAudioProcessor::changeProgramName(int index, const juce::String& 
 //==============================================================================
 void LooptyLoopAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
 }
 
 void LooptyLoopAudioProcessor::releaseResources()
 {
-    // When playback stops, you can use this as an opportunity to free up any
-    // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations

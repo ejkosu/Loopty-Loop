@@ -30,7 +30,7 @@ public:
     //==============================================================================
     void initialise(const juce::String& commandLine) override
     {
-        // This method is where you should put your application's initialisation code.
+        // Init the global parameter state
         audioProcessor.reset(new LooptyLoopAudioProcessor());
         parameters.reset(new juce::AudioProcessorValueTreeState(
             *audioProcessor,

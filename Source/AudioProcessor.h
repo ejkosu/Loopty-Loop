@@ -1,7 +1,8 @@
 /*
   ==============================================================================
 
-    This file contains the basic framework code for a JUCE processor.
+    In this application, AudioProcessor is only used to
+    hold the AudioProcessorValueTreeState.
 
   ==============================================================================
 */
