@@ -1,8 +1,8 @@
 /*
   ==============================================================================
 
-    Mixer.h
-    Created: 23 Jan 2022 1:43:49pm
+    GainSlider.h
+    Created: 31 Jan 2022 8:36:37pm
     Author:  Aaron Ennis
 
   ==============================================================================
@@ -11,26 +11,21 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "./GainSlider/GainSlider.h"
 
-class Mixer : public juce::Component
+class GainSlider : public juce::Component
 {
 public:
     //==========================================================================
-    Mixer();
-    ~Mixer();
+    GainSlider(juce::String& sliderName, int sliderKey);
+    ~GainSlider();
 
     //==========================================================================
-    void paint(juce::Graphics& g) override;
     void resized() override;
 
 private:
 
-    GainSlider* mainVolume;
-    GainSlider* track1;
-    GainSlider* track2;
-    GainSlider* track3;
-    GainSlider* track4;
+    juce::Slider* gainSlider;
+    juce::Label* sliderLabel;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Mixer)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GainSlider)
 };
