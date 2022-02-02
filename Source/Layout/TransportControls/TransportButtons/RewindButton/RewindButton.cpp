@@ -16,10 +16,9 @@ RewindButton::RewindButton(juce::String& name, juce::Colour normalColour, juce::
     //========================================================================== 
     // Define the path for the button shape
     juce::Path rewindPath;
-    auto localOrigin = this->getPosition();
     auto localBounds = this->getLocalBounds();
-    rewindPath.addTriangle(localOrigin.getX() + 5.0f, localOrigin.getY() + 5.0f,
-                           localOrigin.getX() + 5.0f, localBounds.getHeight() - 5.0f,
+    rewindPath.addTriangle(localBounds.getX() + 5.0f, localBounds.getY() + 5.0f,
+                           localBounds.getX() + 5.0f, localBounds.getHeight() - 5.0f,
                            localBounds.getWidth() - 5.0f, localBounds.getHeight() / 2.0f);
 
     this->setShape(rewindPath, true, true, false);

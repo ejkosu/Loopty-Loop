@@ -11,16 +11,16 @@
 #include "PlayButton.h"
 
 //==============================================================================
-PlayButton::PlayButton(juce::String& name, juce::Colour normalColour, juce::Colour overColour, juce::Colour downColour) : ShapeButton(name, normalColour, overColour, downColour)
+PlayButton::PlayButton(juce::String& name, juce::Colour normalColour, juce::Colour overColour, juce::Colour downColour) 
+    : ShapeButton(name, normalColour, overColour, downColour)
 {
     //========================================================================== 
     // Define the path for the button shape
     juce::Path playPath;
-    auto localOrigin = this->getPosition();
     auto localBounds = this->getLocalBounds();
-    playPath.addTriangle(localOrigin.getX() + 5.0f, localOrigin.getY() + 5.0f,
-                         localOrigin.getX() + 5.0f, localBounds.getHeight() - 5.0f,
-                         localBounds.getWidth() - 5.0f, localBounds.getHeight() / 2.0f);
+    playPath.addTriangle(localBounds.getY() - 5.0f, localBounds.getX() - 5.0f,
+                         localBounds.getY() - 5.0f, localBounds.getHeight() + 5.0f,
+                         localBounds.getWidth() + 5.0f, localBounds.getHeight() / 2.0f);
 
     this->setShape(playPath, true, true, false);
     //==========================================================================
