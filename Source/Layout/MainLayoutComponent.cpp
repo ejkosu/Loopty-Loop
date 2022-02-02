@@ -11,7 +11,8 @@
 #include "MainLayoutComponent.h"
 
 //==============================================================================
-MainLayoutComponent::MainLayoutComponent()
+MainLayoutComponent::MainLayoutComponent(GuiParameters& GuiParams)
+    : audioTracks{ GuiParams }
 {
     addAndMakeVisible(audioTracks);
     addAndMakeVisible(transportControls);

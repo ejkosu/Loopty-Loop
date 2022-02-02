@@ -11,7 +11,8 @@
 #include "AudioTrack.h"
 
 //==============================================================================
-AudioTrack::AudioTrack(int t)
+AudioTrack::AudioTrack(int t, GuiParameters& GuiParams)
+    : controlButtonsArea{ t, GuiParams }
 {
     trackNumber = t;
     addAndMakeVisible(trackLabel);

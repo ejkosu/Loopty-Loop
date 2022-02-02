@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "./Layout/MainLayoutComponent.h"
+#include "GuiParameters.h"
 
 //==============================================================================
 /*
@@ -27,6 +28,7 @@ public:
 private:
 
     MainLayoutComponent mainLayout;
+    GuiParameters GuiParams;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

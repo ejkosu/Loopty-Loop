@@ -11,12 +11,13 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "../../../../GuiParameters.h"
 
 class TrackControlButtons : public juce::Component
 {
 public:
     //==========================================================================
-    TrackControlButtons();
+    TrackControlButtons(int id, GuiParameters& params);
     ~TrackControlButtons();
 
     //==========================================================================
@@ -29,6 +30,9 @@ private:
     juce::ToggleButton* muteBtn;
     juce::ToggleButton* revBtn;
     juce::ToggleButton* soloBtn;
+
+    int trackId;
+    GuiParameters& GuiParams;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TrackControlButtons)
 };

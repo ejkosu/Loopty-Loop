@@ -2,6 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent()
+    : mainLayout{ GuiParams }
 {
     addAndMakeVisible(mainLayout);
     // Make sure you set the size of the component after

@@ -11,12 +11,12 @@
 #include "AudioTracks.h"
 
 //==============================================================================
-AudioTracks::AudioTracks()
+AudioTracks::AudioTracks(GuiParameters& GuiParams)
 {
-    this->audioTrack01 = new AudioTrack(1);
-    this->audioTrack02 = new AudioTrack(2);
-    this->audioTrack03 = new AudioTrack(3);
-    this->audioTrack04 = new AudioTrack(4);
+    this->audioTrack01 = new AudioTrack(1, GuiParams);
+    this->audioTrack02 = new AudioTrack(2, GuiParams);
+    this->audioTrack03 = new AudioTrack(3, GuiParams);
+    this->audioTrack04 = new AudioTrack(4, GuiParams);
     addAndMakeVisible(*audioTrack01);
     addAndMakeVisible(*audioTrack02);
     addAndMakeVisible(*audioTrack03);

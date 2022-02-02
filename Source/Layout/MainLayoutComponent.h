@@ -14,12 +14,13 @@
 #include "./AudioTracks/AudioTracks.h"
 #include "./TransportControls/TransportControls.h"
 #include "./Mixer/Mixer.h"
+#include "../GuiParameters.h"
 
 class MainLayoutComponent   :   public juce::Component
 {
 public:
     //=========================================================================
-    MainLayoutComponent();
+    MainLayoutComponent(GuiParameters& GuiParams);
     ~MainLayoutComponent() override;
 
     //=========================================================================

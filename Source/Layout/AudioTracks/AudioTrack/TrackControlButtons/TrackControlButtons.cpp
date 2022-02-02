@@ -11,16 +11,25 @@
 #include "TrackControlButtons.h"
 
 //==============================================================================
-TrackControlButtons::TrackControlButtons()
+TrackControlButtons::TrackControlButtons(int id, GuiParameters& params)
+    : GuiParams{ params },
+    trackId{ id }
 {
     this->armBtn = new juce::ToggleButton("Arm");
     this->muteBtn = new juce::ToggleButton("Mute");
     this->revBtn = new juce::ToggleButton("Rev");
     this->soloBtn = new juce::ToggleButton("Solo");
+
+    // Callback on button click
+    this->revBtn->onClick = [this] {
+        GuiParams.revs[trackId-1] = this->revBtn->getToggleState();
+    };
+
     this->armBtn->changeWidthToFitText();
     this->muteBtn->changeWidthToFitText();
     this->soloBtn->changeWidthToFitText();
     this->revBtn->changeWidthToFitText();
+
     addAndMakeVisible(*armBtn);
     addAndMakeVisible(*muteBtn);
     addAndMakeVisible(*revBtn);
@@ -53,5 +62,11 @@ void TrackControlButtons::paint(juce::Graphics& g)
 
 void TrackControlButtons::resized()
 {
-
+    // Demonstration of callbacks, can remove
+    if (GuiParams.revs[trackId-1] == true) {
+        revBtn->setButtonText("Rev True");
+    }
+    else {
+        revBtn->setButtonText("Rev False");
+    }
 }

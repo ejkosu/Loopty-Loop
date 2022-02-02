@@ -12,12 +12,13 @@
 
 #include <JuceHeader.h>
 #include "./AudioTrack/AudioTrack.h"
+#include "../../GuiParameters.h"
 
 class AudioTracks : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTracks();
+    AudioTracks(GuiParameters& GuiParams);
     ~AudioTracks();
 
     //==========================================================================

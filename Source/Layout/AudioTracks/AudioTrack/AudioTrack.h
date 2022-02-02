@@ -14,12 +14,13 @@
 #include "./WaveformWindow/WaveformWindow.h"
 #include "./TrackControlButtons/TrackControlButtons.h"
 #include "./Knob/Knob.h"
+#include "../../../GuiParameters.h"
 
 class AudioTrack : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTrack(int t);
+    AudioTrack(int t, GuiParameters& params);
     ~AudioTrack();
 
     //==========================================================================
