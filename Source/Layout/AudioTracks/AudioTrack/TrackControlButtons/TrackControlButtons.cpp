@@ -21,18 +21,9 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
     this->soloBtn = new juce::ToggleButton("Solo");
 
     // ValueTreeState attachments
-    armAttachment.reset(new ButtonAttachment(parameters,
-                                             "arm" + std::to_string(trackId),
-                                             *armBtn));
-    muteAttachment.reset(new ButtonAttachment(parameters,
-                                              "mute" + std::to_string(trackId),
-                                              *muteBtn));
     revAttachment.reset(new ButtonAttachment(parameters,
                                              "rev" + std::to_string(trackId),
                                              *revBtn));
-    soloAttachment.reset(new ButtonAttachment(parameters,
-                                              "solo" + std::to_string(trackId),
-                                              *soloBtn));
 
     this->armBtn->changeWidthToFitText();
     this->muteBtn->changeWidthToFitText();
