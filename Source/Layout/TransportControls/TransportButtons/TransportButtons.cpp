@@ -54,5 +54,4 @@ void TransportButtons::resized()
                             juce::GridItem(*recordBtn) };
 
     transportGrid.performLayout(getLocalBounds());
-
 }
