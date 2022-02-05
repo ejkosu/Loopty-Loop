@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Source\AudioProcessor.cpp"/>
     <ClCompile Include="..\..\Source\Layout\MainLayoutComponent.cpp"/>
+    <ClCompile Include="..\..\Source\Layout\Mixer\GainSlider\GainSlider.cpp"/>
     <ClCompile Include="..\..\Source\Layout\Mixer\Mixer.cpp"/>
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\RecordButton\RecordButton.cpp"/>
     <ClCompile Include="..\..\Source\Layout\TransportControls\TransportButtons\PlayButton\PlayButton.cpp"/>
@@ -2213,6 +2214,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\Source\AudioProcessor.h"/>
     <ClInclude Include="..\..\Source\Layout\MainLayoutComponent.h"/>
+    <ClInclude Include="..\..\Source\Layout\Mixer\GainSlider\GainSlider.h"/>
     <ClInclude Include="..\..\Source\Layout\Mixer\Mixer.h"/>
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\RecordButton\RecordButton.h"/>
     <ClInclude Include="..\..\Source\Layout\TransportControls\TransportButtons\PlayButton\PlayButton.h"/>

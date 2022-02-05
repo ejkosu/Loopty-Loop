@@ -16,6 +16,10 @@
         <FILE id="D0fX2a" name="MainLayoutComponent.h" compile="0" resource="0"
               file="Source/Layout/MainLayoutComponent.h"/>
         <GROUP id="{936DAF7E-7CCE-1568-755A-8573E74285D6}" name="Mixer">
+          <GROUP id="{79008FF9-791E-E320-AB38-1ED418EAECCD}" name="GainSlider">
+            <FILE id="kZWvin" name="GainSlider.cpp" compile="1" resource="0" file="Source/Layout/Mixer/GainSlider/GainSlider.cpp"/>
+            <FILE id="Vzgr9O" name="GainSlider.h" compile="0" resource="0" file="Source/Layout/Mixer/GainSlider/GainSlider.h"/>
+          </GROUP>
           <FILE id="iIbgvy" name="Mixer.cpp" compile="1" resource="0" file="Source/Layout/Mixer/Mixer.cpp"/>
           <FILE id="LSg2vw" name="Mixer.h" compile="0" resource="0" file="Source/Layout/Mixer/Mixer.h"/>
         </GROUP>

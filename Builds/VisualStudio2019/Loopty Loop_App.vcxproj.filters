@@ -2,6 +2,9 @@
 
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Loopty Loop\Source\Layout\Mixer\GainSlider">
+      <UniqueIdentifier>{FF6ABAC8-B909-1CDA-0E6F-9A1A2A13F4F7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Loopty Loop\Source\Layout\Mixer">
       <UniqueIdentifier>{48CA6E2E-0CD0-F9C1-F228-26E6DF73DD9F}</UniqueIdentifier>
     </Filter>
@@ -507,6 +510,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\MainLayoutComponent.cpp">
       <Filter>Loopty Loop\Source\Layout</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Layout\Mixer\GainSlider\GainSlider.cpp">
+      <Filter>Loopty Loop\Source\Layout\Mixer\GainSlider</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\Layout\Mixer\Mixer.cpp">
       <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
@@ -2759,6 +2765,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\MainLayoutComponent.h">
       <Filter>Loopty Loop\Source\Layout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Layout\Mixer\GainSlider\GainSlider.h">
+      <Filter>Loopty Loop\Source\Layout\Mixer\GainSlider</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Source\Layout\Mixer\Mixer.h">
       <Filter>Loopty Loop\Source\Layout\Mixer</Filter>
