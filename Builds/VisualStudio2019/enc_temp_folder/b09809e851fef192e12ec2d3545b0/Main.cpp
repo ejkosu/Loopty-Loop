@@ -102,13 +102,13 @@ public:
                     "Solo 4",
                     false),
                 std::make_unique<juce::AudioParameterInt>(
-                    "armedTrackId",   // the track # of the armed track
+                    "armedTrackId",    // the track # of the armed track
                     "Armed Track #",
                     0,                // min
                     4,                // max
                     0),               // default of "0" means none armed
                 std::make_unique<juce::AudioParameterInt>(
-                    "soloedTrackId",  // the track # of the soloed track
+                    "soloedTrackId",   // the track # of the soloed track
                     "Solo'd Track #",
                     0,
                     4,

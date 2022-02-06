@@ -12,7 +12,7 @@ class MainComponent     :   public juce::AudioAppComponent
 {
 public:
     //==============================================================================
-    MainComponent();
+    MainComponent(juce::AudioProcessorValueTreeState& vts);
     ~MainComponent() override;
 
     //==============================================================================
