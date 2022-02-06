@@ -33,9 +33,9 @@ private:
     juce::ToggleButton* revBtn;
     juce::ToggleButton* soloBtn;
 
-    std::unique_ptr<ButtonAttachment> armAttachment;
-    std::unique_ptr<ButtonAttachment> muteAttachment;
     std::unique_ptr<ButtonAttachment> revAttachment;
+    std::unique_ptr<ButtonAttachment> muteAttachment;
+    std::unique_ptr<ButtonAttachment> armAttachment;
     std::unique_ptr<ButtonAttachment> soloAttachment;
 
     juce::AudioProcessorValueTreeState& parameters;

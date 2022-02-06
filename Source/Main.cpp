@@ -37,18 +37,82 @@ public:
             nullptr,
             juce::Identifier("VTS"),
             {
-                std::make_unique<juce::AudioParameterBool>("rev1",           // parameterID
-                                                           "Reverse 1",      // parameter name
-                                                           false),           // default value
-                std::make_unique<juce::AudioParameterBool>("rev2",
-                                                           "Reverse 2",
-                                                           false),
-                std::make_unique<juce::AudioParameterBool>("rev3",
-                                                           "Reverse 3",
-                                                           false),
-                std::make_unique<juce::AudioParameterBool>("rev4",
-                                                           "Reverse 4",
-                                                           false)
+                std::make_unique<juce::AudioParameterBool>(
+                    "rev1",           // parameterID
+                    "Reverse 1",      // parameter name
+                    false),           // default value
+                std::make_unique<juce::AudioParameterBool>(
+                    "rev2",
+                    "Reverse 2",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "rev3",
+                    "Reverse 3",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "rev4",
+                    "Reverse 4",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "mute1",
+                    "Mute 1",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "mute2",
+                    "Mute 2",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "mute3",
+                    "Mute 3",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "mute4",
+                    "Mute 4",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "arm1",
+                    "Arm 1",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "arm2",
+                    "Arm 2",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "arm3",
+                    "Arm 3",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "arm4",
+                    "Arm 4",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "solo1",
+                    "Solo 1",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "solo2",
+                    "Solo 2",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "solo3",
+                    "Solo 3",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "solo4",
+                    "Solo 4",
+                    false),
+                std::make_unique<juce::AudioParameterInt>(
+                    "armedTrackId",    // the track # of the armed track
+                    "Armed Track #",
+                    0,                // min
+                    4,                // max
+                    0),               // default of "0" means none armed
+                std::make_unique<juce::AudioParameterInt>(
+                    "soloedTrackId",   // the track # of the soloed track
+                    "Solo'd Track #",
+                    0,
+                    4,
+                    0)                // default of "0" means none soloed
             }));
 
         mainWindow.reset(new MainWindow(getApplicationName(), *parameters));
