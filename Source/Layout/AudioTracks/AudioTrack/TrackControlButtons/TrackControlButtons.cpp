@@ -17,7 +17,7 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
     this->armBtn = new juce::ToggleButton("Arm");
     this->muteBtn = new juce::ToggleButton("Mute");
     // "Rev" text changed for demonstration of ValueTreeState
-    this->revBtn = new juce::ToggleButton("Rev False");
+    this->revBtn = new juce::ToggleButton("Rev");
     this->soloBtn = new juce::ToggleButton("Solo");
 
     // ValueTreeState attachments
