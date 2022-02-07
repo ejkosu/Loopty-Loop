@@ -99,30 +99,4 @@ void TrackControlButtons::paint(juce::Graphics& g)
 
 void TrackControlButtons::resized()
 {
-    // Demonstration of ValueTreeState, can remove
-
-    if (parameters.getParameterAsValue("rev" + std::to_string(trackId)) == true) {
-        revBtn->setButtonText("Rev True");
-    } else {
-        revBtn->setButtonText("Rev False");
-    }
-
-    if (parameters.getParameterAsValue("mute" + std::to_string(trackId)) == true) {
-        muteBtn->setButtonText("Mute True");
-    } else {
-        muteBtn->setButtonText("Mute False");
-    }
-
-    if (parameters.getParameterAsValue("solo" + std::to_string(trackId)) == true) {
-        soloBtn->setButtonText("Solo True");
-    }
-    else {
-        soloBtn->setButtonText("Solo False");
-    }
-
-    if (parameters.getParameterAsValue("arm" + std::to_string(trackId)) == true) {
-        armBtn->setButtonText("Arm True");
-    } else {
-        armBtn->setButtonText("Arm False");
-    }
 }
