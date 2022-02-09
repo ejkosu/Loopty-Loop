@@ -8,7 +8,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     // Make sure you set the size of the component after
     // you add any child components.
     setSize(800, 600);
-/*
+
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
         && ! juce::RuntimePermissions::isGranted (juce::RuntimePermissions::recordAudio))
@@ -19,8 +19,8 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     else
     {
         // Specify the number of input and output channels that we want to open
-        setAudioChannels(2, 2);
-    }*/
+        setAudioChannels(0, 2);
+    }
 }
 
 MainComponent::~MainComponent()
@@ -32,37 +32,41 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
+    position = 0;
 }
 
-void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
+void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
 {   /* code adpated from https://docs.juce.com/master/tutorial_looping_audio_sample_buffer.html */
-    auto numInputChannels = fileBuffer.getNumChannels();
-    auto numOutputChannels = bufferToFill.buffer->getNumChannels();
+    auto numInputChannels = 2;
+    auto numOutputChannels = 2;
 
     auto outputSamplesRemaining = bufferToFill.numSamples;
     auto outputSamplesOffset = bufferToFill.startSample;
-    
+
     while (outputSamplesRemaining > 0)
     {
-        auto bufferSamplesRemaining = fileBuffer.getNumSamples() - position;
-        auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
+            if (fileBuffer.getNumSamples() > 0)
+            {
+            auto bufferSamplesRemaining = fileBuffer.getNumSamples() - position;
+            auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
 
-        for (auto channel = 0; channel < numOutputChannels; ++channel)
-        {
-            bufferToFill.buffer->copyFrom(channel,
-                outputSamplesOffset,
-                fileBuffer,
-                channel % numInputChannels,
-                position,
-                samplesThisTime);
+            for (auto channel = 0; channel < numOutputChannels; ++channel)
+            {
+                bufferToFill.buffer->copyFrom(channel,
+                    outputSamplesOffset,
+                    fileBuffer,
+                    channel % numInputChannels,
+                    position,
+                    samplesThisTime);
+            }
+
+            outputSamplesRemaining -= samplesThisTime;
+            outputSamplesOffset += samplesThisTime;
+            position += samplesThisTime;
+
+            if (position == fileBuffer.getNumSamples())
+                position = 0;
         }
-
-        outputSamplesRemaining -= samplesThisTime;
-        outputSamplesOffset += samplesThisTime;
-        position += samplesThisTime;
-
-        if (position == fileBuffer.getNumSamples())
-            position = 0;
     }
 }
 

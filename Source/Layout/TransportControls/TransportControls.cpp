@@ -17,6 +17,7 @@ TransportControls::TransportControls(juce::AudioSampleBuffer& fileBuffer)
     addAndMakeVisible(loadTrackButton);
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this, &fileBuffer] {loadTrackButtonClicked(&fileBuffer); };
+    formatManager.registerBasicFormats();
 }
 
 TransportControls::~TransportControls()
@@ -56,6 +57,7 @@ void TransportControls::resized()
 */
 void TransportControls::loadTrackButtonClicked(juce::AudioSampleBuffer* fileBuffer)
 {
+
     fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
                                                        juce::File{}, "*.wav");
 
@@ -63,32 +65,27 @@ void TransportControls::loadTrackButtonClicked(juce::AudioSampleBuffer* fileBuff
                             juce::FileBrowserComponent::canSelectFiles;
 
     fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer](const juce::FileChooser& fc)
+    {
+        auto file = fc.getResult();
+        if (file == juce::File{}) return;
+        std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
+        if (reader.get() != nullptr)
         {
-            auto file = fc.getResult();
-            
-            if (file == juce::File{}) return;
-
-            std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
-
-            if (reader.get() != nullptr)
+            auto duration = (float)reader->lengthInSamples / reader->sampleRate;
+            if (duration < 30)
             {
-                auto duration = (float)reader->lengthInSamples / reader->sampleRate;               // [3]
-
-                if (duration < 2)
-                {
-                    fileBuffer.setSize((int)reader->numChannels, (int)reader->lengthInSamples);  // [4]
-                    reader->read(fileBuffer,                                                      // [5]
-                        0,                                                                //  [5.1]
-                        (int)reader->lengthInSamples,                                    //  [5.2]
-                        0,                                                                //  [5.3]
-                        true,                                                             //  [5.4]
-                        true);                                                            //  [5.5]
-                }
-                else
-                {
-                    // handle the error that the file is 2 seconds or longer..
-                }
+                fileBuffer->setSize(2, (int)reader->lengthInSamples);
+                reader->read(fileBuffer,
+                    0,
+                    (int)reader->lengthInSamples,
+                    0,
+                    true,
+                    true);
             }
+            else
+            {
+                perror("the file is too long");
             }
-        });
+        }
+    });
 }
