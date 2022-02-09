@@ -7,16 +7,16 @@
 
   ==============================================================================
 */
-
 #include "TransportControls.h"
 
+
 //==============================================================================
-TransportControls::TransportControls()
+TransportControls::TransportControls(juce::AudioSampleBuffer& fileBuffer)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
     loadTrackButton.setButtonText("Load Track");
-    loadTrackButton.onClick = [this] {loadTrackButtonClicked(); };
+    loadTrackButton.onClick = [this, &fileBuffer] {loadTrackButtonClicked(&fileBuffer); };
 }
 
 TransportControls::~TransportControls()
@@ -54,7 +54,7 @@ void TransportControls::resized()
 *   in the Juce demos at:
 *   https://docs.juce.com/master/tutorial_playing_sound_files.html
 */
-void TransportControls::loadTrackButtonClicked()
+void TransportControls::loadTrackButtonClicked(juce::AudioSampleBuffer* fileBuffer)
 {
     fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
                                                        juce::File{}, "*.wav");
@@ -62,7 +62,7 @@ void TransportControls::loadTrackButtonClicked()
     auto fileChooserFlags = juce::FileBrowserComponent::openMode |
                             juce::FileBrowserComponent::canSelectFiles;
 
-    fileChooser->launchAsync(fileChooserFlags, [this](const juce::FileChooser& fc)
+    fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer](const juce::FileChooser& fc)
         {
             auto file = fc.getResult();
             
@@ -72,8 +72,23 @@ void TransportControls::loadTrackButtonClicked()
 
             if (reader.get() != nullptr)
             {
-                // This is where we will need the code that does what is needed
-                // to actually load the file into the track's buffer.
+                auto duration = (float)reader->lengthInSamples / reader->sampleRate;               // [3]
+
+                if (duration < 2)
+                {
+                    fileBuffer.setSize((int)reader->numChannels, (int)reader->lengthInSamples);  // [4]
+                    reader->read(fileBuffer,                                                      // [5]
+                        0,                                                                //  [5.1]
+                        (int)reader->lengthInSamples,                                    //  [5.2]
+                        0,                                                                //  [5.3]
+                        true,                                                             //  [5.4]
+                        true);                                                            //  [5.5]
+                }
+                else
+                {
+                    // handle the error that the file is 2 seconds or longer..
+                }
+            }
             }
         });
 }

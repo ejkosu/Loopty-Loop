@@ -17,7 +17,7 @@ class TransportControls : public juce::Component
 {
 public:
     //==========================================================================
-    TransportControls();
+    TransportControls(juce::AudioSampleBuffer& fileBuffer);
     ~TransportControls();
 
     //==========================================================================
@@ -31,7 +31,7 @@ private:
     std::unique_ptr<juce::FileChooser> fileChooser;
     juce::AudioFormatManager formatManager;
 
-    void loadTrackButtonClicked();
+    void loadTrackButtonClicked(juce::AudioSampleBuffer* fileBuffer);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
 };

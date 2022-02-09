@@ -2,7 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts)
+    : mainLayout(vts, fileBuffer)
 {
     addAndMakeVisible(mainLayout);
     // Make sure you set the size of the component after
@@ -35,7 +35,7 @@ void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRat
 }
 
 void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
-{   
+{   /* code adpated from https://docs.juce.com/master/tutorial_looping_audio_sample_buffer.html */
     auto numInputChannels = fileBuffer.getNumChannels();
     auto numOutputChannels = bufferToFill.buffer->getNumChannels();
 
