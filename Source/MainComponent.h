@@ -25,6 +25,8 @@ public:
     void resized() override;
 
 private:
+    juce::AudioSampleBuffer fileBuffer;
+    int position;
 
     MainLayoutComponent mainLayout;
 
