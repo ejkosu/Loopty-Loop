@@ -11,12 +11,12 @@
 
 
 //==============================================================================
-TransportControls::TransportControls(juce::AudioSampleBuffer& fileBuffer)
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
     loadTrackButton.setButtonText("Load Track");
-    loadTrackButton.onClick = [this, &fileBuffer] {loadTrackButtonClicked(&fileBuffer); };
+    loadTrackButton.onClick = [this, &vts, fileBuffer] {loadTrackButtonClicked(vts, fileBuffer); };
     formatManager.registerBasicFormats();
 }
 
@@ -55,9 +55,11 @@ void TransportControls::resized()
 *   in the Juce demos at:
 *   https://docs.juce.com/master/tutorial_playing_sound_files.html
 */
-void TransportControls::loadTrackButtonClicked(juce::AudioSampleBuffer* fileBuffer)
+void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
 {
-
+    
+    auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
+    
     fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
                                                        juce::File{}, "*.wav");
 

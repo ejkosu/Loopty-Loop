@@ -2,8 +2,9 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, fileBuffer)
+    : mainLayout(vts, &fileBuffer)
 {
+    position = 0;
     addAndMakeVisible(mainLayout);
     // Make sure you set the size of the component after
     // you add any child components.
@@ -32,7 +33,7 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    position = 0;
+    
 }
 
 void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)

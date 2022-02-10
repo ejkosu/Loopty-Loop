@@ -27,7 +27,6 @@ public:
 private:
     juce::AudioSampleBuffer fileBuffer;
     int position;
-
     MainLayoutComponent mainLayout;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
