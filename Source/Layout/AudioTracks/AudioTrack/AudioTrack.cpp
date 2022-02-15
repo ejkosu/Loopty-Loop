@@ -24,8 +24,8 @@ AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts)
     addAndMakeVisible(trackWaveformWindow);
     addAndMakeVisible(controlButtonsArea);
 
-    panKnob = new Knob(juce::String("Pan"), t);
-    slipKnob = new Knob(juce::String("Slip"), t);
+    panKnob = new Knob(juce::String("Pan"), t, vts);
+    slipKnob = new Knob(juce::String("Slip"), t, vts);
 
     addAndMakeVisible(*panKnob);
     addAndMakeVisible(*slipKnob);
