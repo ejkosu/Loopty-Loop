@@ -8,6 +8,7 @@
   ==============================================================================
 */
 #include "TransportControls.h"
+#include "../Source/MainComponent.h"
 
 
 //==============================================================================
@@ -57,7 +58,7 @@ void TransportControls::resized()
 */
 void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
 {
-    
+    MainComponent::shutdownAudio();
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
     
     fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
@@ -66,7 +67,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
     auto fileChooserFlags = juce::FileBrowserComponent::openMode |
                             juce::FileBrowserComponent::canSelectFiles;
 
-    fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer](const juce::FileChooser& fc)
+    fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex](const juce::FileChooser& fc)
     {
         auto file = fc.getResult();
         if (file == juce::File{}) return;
@@ -76,13 +77,14 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
             auto duration = (float)reader->lengthInSamples / reader->sampleRate;
             if (duration < 30)
             {
-                fileBuffer->setSize(2, (int)reader->lengthInSamples);
-                reader->read(fileBuffer,
+                fileBuffer[trackIndex].setSize(2, (int)reader->lengthInSamples);
+                reader->read(&fileBuffer[trackIndex],
                     0,
                     (int)reader->lengthInSamples,
                     0,
                     true,
                     true);
+                MainComponent::setAudioChannels(0, 2);
             }
             else
             {
