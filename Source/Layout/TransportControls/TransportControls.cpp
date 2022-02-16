@@ -12,6 +12,7 @@
 
 //==============================================================================
 TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
+    : transportButtons(vts)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
@@ -57,8 +58,8 @@ void TransportControls::resized()
 */
 void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {
-    mainComponent->shutdownAudio();
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
+
     if (trackIndex >= 0 && trackIndex < 4) {
         fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
             juce::File{}, "*.wav");
