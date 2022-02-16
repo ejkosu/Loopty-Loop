@@ -59,35 +59,39 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
 {
     
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
-    
-    fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
-                                                       juce::File{}, "*.wav");
+    if (trackIndex >= 0 && trackIndex < 4) {
+        fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
+            juce::File{}, "*.wav");
 
-    auto fileChooserFlags = juce::FileBrowserComponent::openMode |
-                            juce::FileBrowserComponent::canSelectFiles;
+        auto fileChooserFlags = juce::FileBrowserComponent::openMode |
+            juce::FileBrowserComponent::canSelectFiles;
 
-    fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer](const juce::FileChooser& fc)
+        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex](const juce::FileChooser& fc)
+            {
+                auto file = fc.getResult();
+                if (file == juce::File{}) return;
+                std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
+                if (reader.get() != nullptr)
+                {
+                    auto duration = (float)reader->lengthInSamples / reader->sampleRate;
+                    if (duration < 30)
+                    {
+                        fileBuffer[trackIndex].setSize(2, (int)reader->lengthInSamples);
+                        reader->read(&fileBuffer[trackIndex],
+                            0,
+                            (int)reader->lengthInSamples,
+                            0,
+                            true,
+                            true);
+                    }
+                    else
+                    {
+                        perror("the file is too long");
+                    }
+                }
+            });
+    }else
     {
-        auto file = fc.getResult();
-        if (file == juce::File{}) return;
-        std::unique_ptr<juce::AudioFormatReader> reader(formatManager.createReaderFor(file));
-        if (reader.get() != nullptr)
-        {
-            auto duration = (float)reader->lengthInSamples / reader->sampleRate;
-            if (duration < 30)
-            {
-                fileBuffer->setSize(2, (int)reader->lengthInSamples);
-                reader->read(fileBuffer,
-                    0,
-                    (int)reader->lengthInSamples,
-                    0,
-                    true,
-                    true);
-            }
-            else
-            {
-                perror("the file is too long");
-            }
-        }
-    });
+        perror("No track selected");
+    }
 }

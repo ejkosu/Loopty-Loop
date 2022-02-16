@@ -2,7 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, &fileBuffer)
+    : mainLayout(vts, fileBuffer)
 {
     position = 0;
     addAndMakeVisible(mainLayout);
@@ -46,34 +46,37 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
 
     while (outputSamplesRemaining > 0)
     {
-            if (fileBuffer.getNumSamples() > 0)
+        for (int i = 0; i < 4; i++)
+        {
+            if (fileBuffer[i].getNumSamples() > 0)
             {
-            auto bufferSamplesRemaining = fileBuffer.getNumSamples() - position;
-            auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
+                auto bufferSamplesRemaining = fileBuffer[i].getNumSamples() - position;
+                auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
 
-            for (auto channel = 0; channel < numOutputChannels; ++channel)
-            {
-                bufferToFill.buffer->copyFrom(channel,
-                    outputSamplesOffset,
-                    fileBuffer,
-                    channel % numInputChannels,
-                    position,
-                    samplesThisTime);
+                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                {
+                    bufferToFill.buffer->addFrom(channel,
+                        outputSamplesOffset,
+                        fileBuffer[i],
+                        channel % numInputChannels,
+                        position,
+                        samplesThisTime);
+                }
+
+                outputSamplesRemaining -= samplesThisTime;
+                outputSamplesOffset += samplesThisTime;
+                position += samplesThisTime;
+
+                if (position == fileBuffer[i].getNumSamples())
+                    position = 0;
             }
-
-            outputSamplesRemaining -= samplesThisTime;
-            outputSamplesOffset += samplesThisTime;
-            position += samplesThisTime;
-
-            if (position == fileBuffer.getNumSamples())
-                position = 0;
         }
     }
 }
 
 void MainComponent::releaseResources()
 {
-    fileBuffer.setSize(0, 0);
+    fileBuffer[0].setSize(0, 0);
 }
 
 //==============================================================================
