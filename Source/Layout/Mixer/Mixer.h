@@ -17,7 +17,7 @@ class Mixer : public juce::Component
 {
 public:
     //==========================================================================
-    Mixer();
+    Mixer(juce::AudioProcessorValueTreeState& vts);
     ~Mixer();
 
     //==========================================================================

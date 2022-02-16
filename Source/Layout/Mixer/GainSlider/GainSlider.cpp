@@ -10,14 +10,20 @@
 
 #include "GainSlider.h"
 
-GainSlider::GainSlider(juce::String& sliderName, int sliderKey)
+GainSlider::GainSlider(juce::String& sliderName, int sliderKey, juce::AudioProcessorValueTreeState& vts)
+    : parameters(vts)
 {
-    gainSlider = new juce::Slider(sliderName);
+    gainSlider.reset(new juce::Slider(sliderName));
     addAndMakeVisible(*gainSlider);
     gainSlider->setSliderStyle(juce::Slider::SliderStyle::LinearVertical);
     gainSlider->setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
 
-    sliderLabel = new juce::Label(sliderName, sliderName);
+    // ValueTreeState Attachment
+    attachment.reset(new SliderAttachment(parameters,
+                     "gain" + std::to_string(sliderKey),
+                     *gainSlider));
+
+    sliderLabel.reset(new juce::Label(sliderName, sliderName));
     addAndMakeVisible(*sliderLabel);
     sliderLabel->setText(sliderName, juce::dontSendNotification);
     sliderLabel->setJustificationType(juce::Justification::centred);
@@ -25,8 +31,6 @@ GainSlider::GainSlider(juce::String& sliderName, int sliderKey)
 
 GainSlider::~GainSlider()
 {
-    delete gainSlider;
-    delete sliderLabel;
 }
 
 void GainSlider::resized()

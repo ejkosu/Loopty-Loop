@@ -12,7 +12,8 @@
 
 //==============================================================================
 MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts)
-    : audioTracks(vts)
+    : audioTracks(vts),
+    mixer(vts)
 {
     addAndMakeVisible(audioTracks);
     addAndMakeVisible(transportControls);
