@@ -11,8 +11,8 @@
 #include "MainLayoutComponent.h"
 
 //==============================================================================
-MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
-    : audioTracks(vts), transportControls(vts, fileBuffer)
+MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
+    : audioTracks(vts), transportControls(vts, fileBuffer, mainComponent)
 {
     addAndMakeVisible(audioTracks);
     addAndMakeVisible(transportControls);

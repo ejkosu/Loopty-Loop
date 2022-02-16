@@ -2,7 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, fileBuffer)
+    : mainLayout(vts, fileBuffer, this)
 {
     position = 0;
     addAndMakeVisible(mainLayout);
@@ -48,7 +48,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     {
         for (int i = 0; i < 4; i++)
         {
-            if (fileBuffer[i].getNumSamples() > 0)
+            if (fileBuffer[i].getNumSamples())
             {
                 auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
                 auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);

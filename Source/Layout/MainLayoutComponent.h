@@ -15,11 +15,12 @@
 #include "./TransportControls/TransportControls.h"
 #include "./Mixer/Mixer.h"
 
+
 class MainLayoutComponent   :   public juce::Component
 {
 public:
     //=========================================================================
-    MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer);
+    MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent);
     ~MainLayoutComponent() override;
 
     //=========================================================================

@@ -11,12 +11,12 @@
 
 
 //==============================================================================
-TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
     loadTrackButton.setButtonText("Load Track");
-    loadTrackButton.onClick = [this, &vts, fileBuffer] {loadTrackButtonClicked(vts, fileBuffer); };
+    loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent] {loadTrackButtonClicked(vts, fileBuffer, mainComponent); };
     formatManager.registerBasicFormats();
 }
 
@@ -55,9 +55,9 @@ void TransportControls::resized()
 *   in the Juce demos at:
 *   https://docs.juce.com/master/tutorial_playing_sound_files.html
 */
-void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer)
+void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {
-    
+    mainComponent->shutdownAudio();
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
     if (trackIndex >= 0 && trackIndex < 4) {
         fileChooser = std::make_unique<juce::FileChooser>("Select a wave file to load...",
@@ -66,7 +66,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
         auto fileChooserFlags = juce::FileBrowserComponent::openMode |
             juce::FileBrowserComponent::canSelectFiles;
 
-        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex](const juce::FileChooser& fc)
+        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex, mainComponent](const juce::FileChooser& fc)
             {
                 auto file = fc.getResult();
                 if (file == juce::File{}) return;
