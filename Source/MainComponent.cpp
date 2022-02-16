@@ -50,7 +50,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         {
             if (fileBuffer[i].getNumSamples() > 0)
             {
-                auto bufferSamplesRemaining = fileBuffer[i].getNumSamples() - position;
+                auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
                 auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
 
                 for (auto channel = 0; channel < numOutputChannels; ++channel)
@@ -67,7 +67,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 outputSamplesOffset += samplesThisTime;
                 position += samplesThisTime;
 
-                if (position == fileBuffer[i].getNumSamples())
+                if (position == fileBuffer[0].getNumSamples())
                     position = 0;
             }
         }
@@ -76,7 +76,10 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
 
 void MainComponent::releaseResources()
 {
-    fileBuffer[0].setSize(0, 0);
+    for (auto i = 0; i < 4; i++) 
+    {
+    fileBuffer[i].setSize(0, 0);
+    }
 }
 
 //==============================================================================
