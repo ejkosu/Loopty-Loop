@@ -28,10 +28,16 @@ private:
 
     TransportButtons transportButtons;
     juce::TextButton loadTrackButton;
+    juce::TextButton loadLoopButton;
+    juce::TextButton saveLoopButton;
+    juce::TextButton audioSettingsButton;
     std::unique_ptr<juce::FileChooser> fileChooser;
     juce::AudioFormatManager formatManager;
 
     void loadTrackButtonClicked();
+    void loadLoopButtonClicked();
+    void saveLoopButtonClicked();
+    void audioSettingsButtonClicked();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
 };

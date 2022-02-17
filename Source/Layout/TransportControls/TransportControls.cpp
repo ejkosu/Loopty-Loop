@@ -15,8 +15,18 @@ TransportControls::TransportControls()
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
+    addAndMakeVisible(loadLoopButton);
+    addAndMakeVisible(saveLoopButton);
+    addAndMakeVisible(audioSettingsButton);
+
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this] {loadTrackButtonClicked(); };
+    loadLoopButton.setButtonText("Load Loop");
+    loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
+    saveLoopButton.setButtonText("Save Loop");
+    saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
+    audioSettingsButton.setButtonText("Audio Settings");
+    audioSettingsButton.onClick = [this] {audioSettingsButtonClicked(); };
 }
 
 TransportControls::~TransportControls()
@@ -46,7 +56,11 @@ void TransportControls::resized()
     buttonGrid.templateColumns = { Track(Fr(1)), Track(Fr(1)),
                                    Track(Fr(1)), Track(Fr(1)) };
 
-    buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), juce::GridItem(loadTrackButton).withMargin(20.0f) };
+    buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), 
+                         juce::GridItem(loadTrackButton).withMargin(20.0f),
+                         juce::GridItem(loadLoopButton).withMargin(20.0f),
+                         juce::GridItem(saveLoopButton).withMargin(20.0f),
+                         juce::GridItem(audioSettingsButton).withMargin(20.0f) };
 
     buttonGrid.performLayout(getLocalBounds());
 
@@ -80,3 +94,9 @@ void TransportControls::loadTrackButtonClicked()
             }
         });
 }
+
+void TransportControls::loadLoopButtonClicked() {}
+
+void TransportControls::saveLoopButtonClicked() {}
+
+void TransportControls::audioSettingsButtonClicked() {}
