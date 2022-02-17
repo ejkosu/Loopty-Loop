@@ -35,15 +35,18 @@ void TransportControls::resized()
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
-    loadTrackButton.setSize(20, 10);
+    auto localBounds = getLocalBounds();
+
+    juce::GridItem::Margin transportMargin(getLocalBounds().getHeight() * 0.1f,
+                                           getLocalBounds().getWidth() * 0.1f,
+                                           getLocalBounds().getHeight() * 0.1f,
+                                           getLocalBounds().getWidth() * 0.1f);
+
     buttonGrid.templateRows = { Track(Fr(1)), Track(Fr(1)) };
     buttonGrid.templateColumns = { Track(Fr(1)), Track(Fr(1)),
                                    Track(Fr(1)), Track(Fr(1)) };
 
-    buttonGrid.items = { juce::GridItem(transportButtons).withArea(1, juce::GridItem::Span(4)), juce::GridItem(loadTrackButton) };
-
-    buttonGrid.justifyContent = juce::Grid::JustifyContent::center;
-    buttonGrid.alignContent = juce::Grid::AlignContent::center;
+    buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), juce::GridItem(loadTrackButton).withMargin(20.0f) };
 
     buttonGrid.performLayout(getLocalBounds());
 
