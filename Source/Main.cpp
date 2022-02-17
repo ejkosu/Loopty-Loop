@@ -235,11 +235,11 @@ public:
         {
             setUsingNativeTitleBar(true);
             setContentOwned(new MainComponent(parameters), true);
-
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
            #else
             setResizable(true, true);
+            this->getConstrainer()->setFixedAspectRatio((double)800 / 600);
             setResizeLimits(800, 600, 1600, 1200);
             centreWithSize(getWidth(), getHeight());
            #endif
