@@ -29,10 +29,10 @@ public:
 
 private:
 
-    RewindButton* rewindBtn;
-    StopButton* stopBtn;
-    PlayButton* playBtn;
-    RecordButton* recordBtn;
+    std::unique_ptr<RewindButton> rewindBtn;
+    std::unique_ptr<StopButton> stopBtn;
+    std::unique_ptr<PlayButton> playBtn;
+    std::unique_ptr<RecordButton> recordBtn;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportButtons)
