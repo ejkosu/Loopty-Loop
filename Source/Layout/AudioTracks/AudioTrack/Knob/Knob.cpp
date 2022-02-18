@@ -14,7 +14,7 @@
 Knob::Knob(juce::String& knobName, int trackNumber, juce::AudioProcessorValueTreeState& vts)
     : parameters(vts)
 {
-    knob.reset(new juce::Slider(knobName));
+    knob = std::make_unique<juce::Slider>(knobName);
     addAndMakeVisible(*knob);
     knob->setSliderStyle(juce::Slider::SliderStyle::Rotary);
     knob->setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);

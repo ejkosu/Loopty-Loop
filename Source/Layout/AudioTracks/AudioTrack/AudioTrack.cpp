@@ -24,8 +24,8 @@ AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts)
     addAndMakeVisible(trackWaveformWindow);
     addAndMakeVisible(controlButtonsArea);
 
-    panKnob = new Knob(juce::String("Pan"), t, vts);
-    slipKnob = new Knob(juce::String("Slip"), t, vts);
+    panKnob = std::make_unique<Knob>(juce::String("Pan"), t, vts);
+    slipKnob = std::make_unique<Knob>(juce::String("Slip"), t, vts);
 
     addAndMakeVisible(*panKnob);
     addAndMakeVisible(*slipKnob);
@@ -34,8 +34,7 @@ AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts)
 
 AudioTrack::~AudioTrack()
 {
-    delete slipKnob;
-    delete panKnob;
+
 }
 
 //==============================================================================
@@ -59,8 +58,8 @@ void AudioTrack::resized()
     trackGrid.items = { juce::GridItem(trackLabel).withMargin(gridItemMargin),
                         juce::GridItem(trackWaveformWindow).withMargin(gridItemMargin),
                         juce::GridItem(controlButtonsArea).withMargin(gridItemMargin),
-                        juce::GridItem(panKnob).withMargin(gridItemMargin),
-                        juce::GridItem(slipKnob).withMargin(gridItemMargin) };
+                        juce::GridItem(*panKnob).withMargin(gridItemMargin),
+                        juce::GridItem(*slipKnob).withMargin(gridItemMargin) };
 
     trackGrid.performLayout(getLocalBounds());
 

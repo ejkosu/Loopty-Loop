@@ -26,10 +26,10 @@ public:
 
 private:
 
-    AudioTrack* audioTrack01;
-    AudioTrack* audioTrack02;
-    AudioTrack* audioTrack03;
-    AudioTrack* audioTrack04;
+    std::unique_ptr<AudioTrack> audioTrack01;
+    std::unique_ptr<AudioTrack> audioTrack02;
+    std::unique_ptr<AudioTrack> audioTrack03;
+    std::unique_ptr<AudioTrack> audioTrack04;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTracks)
 };

@@ -13,10 +13,10 @@
 //==============================================================================
 AudioTracks::AudioTracks(juce::AudioProcessorValueTreeState& vts)
 {
-    this->audioTrack01 = new AudioTrack(1, vts);
-    this->audioTrack02 = new AudioTrack(2, vts);
-    this->audioTrack03 = new AudioTrack(3, vts);
-    this->audioTrack04 = new AudioTrack(4, vts);
+    audioTrack01 = std::make_unique<AudioTrack>(1, vts);
+    audioTrack02 = std::make_unique<AudioTrack>(2, vts);
+    audioTrack03 = std::make_unique<AudioTrack>(3, vts);
+    audioTrack04 = std::make_unique<AudioTrack>(4, vts);
     addAndMakeVisible(*audioTrack01);
     addAndMakeVisible(*audioTrack02);
     addAndMakeVisible(*audioTrack03);
@@ -25,10 +25,7 @@ AudioTracks::AudioTracks(juce::AudioProcessorValueTreeState& vts)
 
 AudioTracks::~AudioTracks()
 {
-    delete audioTrack01;
-    delete audioTrack02;
-    delete audioTrack03;
-    delete audioTrack04;
+
 }
 
 void AudioTracks::paint(juce::Graphics& g)
