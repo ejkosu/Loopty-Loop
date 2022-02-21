@@ -2,7 +2,8 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, fileBuffer, this)
+    : mainLayout(vts, fileBuffer, this),
+    parameters(vts)
 {
     position = 0;
     addAndMakeVisible(mainLayout);
@@ -44,6 +45,28 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     auto outputSamplesRemaining = bufferToFill.numSamples;
     auto outputSamplesOffset = bufferToFill.startSample;
 
+    // Playback stopped
+    // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
+    // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
+    if (*parameters.getRawParameterValue("playback") == 0.0f) {
+        for (int i = 0; i < 4; i++)
+        {
+            if (fileBuffer[i].getNumSamples())
+            {
+                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                {
+                    bufferToFill.buffer->addSample(channel,
+                        outputSamplesOffset,
+                        0.0f);
+
+                    outputSamplesOffset += 1;
+                }
+            }
+        }
+        return;
+    }
+
+    // Playback playing
     while (outputSamplesRemaining > 0)
     {
         for (int i = 0; i < 4; i++)
