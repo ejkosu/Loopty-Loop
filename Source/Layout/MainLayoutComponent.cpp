@@ -11,9 +11,10 @@
 #include "MainLayoutComponent.h"
 
 //==============================================================================
-MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts)
+MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::DialogWindow::LaunchOptions& dialogOptions)
     : audioTracks(vts),
-    mixer(vts)
+      mixer(vts),
+      transportControls(vts, dialogOptions)
 {
     addAndMakeVisible(audioTracks);
     addAndMakeVisible(transportControls);

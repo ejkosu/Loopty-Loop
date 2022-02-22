@@ -19,7 +19,7 @@ class MainLayoutComponent   :   public juce::Component
 {
 public:
     //=========================================================================
-    MainLayoutComponent(juce::AudioProcessorValueTreeState& vts);
+    MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::DialogWindow::LaunchOptions& dialogOptions);
     ~MainLayoutComponent() override;
 
     //=========================================================================
