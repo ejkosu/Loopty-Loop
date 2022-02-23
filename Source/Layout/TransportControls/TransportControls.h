@@ -17,7 +17,7 @@ class TransportControls : public juce::Component
 {
 public:
     //==========================================================================
-    TransportControls();
+    TransportControls(juce::AudioProcessorValueTreeState& vts, juce::DialogWindow::LaunchOptions& dialogOptions);
     ~TransportControls();
 
     //==========================================================================
@@ -33,11 +33,12 @@ private:
     juce::TextButton audioSettingsButton;
     std::unique_ptr<juce::FileChooser> fileChooser;
     juce::AudioFormatManager formatManager;
+    juce::AudioProcessorValueTreeState& parameters;
 
     void loadTrackButtonClicked();
     void loadLoopButtonClicked();
     void saveLoopButtonClicked();
-    void audioSettingsButtonClicked();
+    void audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
 };

@@ -11,7 +11,8 @@
 #include "TransportControls.h"
 
 //==============================================================================
-TransportControls::TransportControls()
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::DialogWindow::LaunchOptions& dialogOptions)
+    : parameters(vts)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
@@ -26,7 +27,7 @@ TransportControls::TransportControls()
     saveLoopButton.setButtonText("Save Loop");
     saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
     audioSettingsButton.setButtonText("Audio Settings");
-    audioSettingsButton.onClick = [this] {audioSettingsButtonClicked(); };
+    audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
 }
 
 TransportControls::~TransportControls()
@@ -99,4 +100,7 @@ void TransportControls::loadLoopButtonClicked() {}
 
 void TransportControls::saveLoopButtonClicked() {}
 
-void TransportControls::audioSettingsButtonClicked() {}
+void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions)
+{
+    dialogOptions.launchAsync();
+}
