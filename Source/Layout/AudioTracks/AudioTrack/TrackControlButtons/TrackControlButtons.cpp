@@ -35,15 +35,20 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
                                               *soloBtn));
 
     this->armBtn->onClick = [this] {
-        // Update the armed track ID in APVTS
-        juce::Value armedTrackId = parameters.getParameterAsValue("armedTrackId");
-        armedTrackId = trackId;
+        bool buttonState = this->armBtn->getToggleState();
 
-        // De-select all Arm buttons besides this one
-        for (int i = 1; i <= 4; i++) {
-            juce::Value buttonState = parameters.getParameterAsValue("arm" + std::to_string(i));
-            if (trackId != i) {
-                buttonState = false;
+        if (buttonState == true)
+        {
+            // Update the armed track ID in APVTS
+            juce::Value armedTrackId = parameters.getParameterAsValue("armedTrackId");
+            armedTrackId = trackId;
+
+            // De-select all Arm buttons besides this one
+            for (int i = 1; i <= 4; i++) {
+                if (trackId != i) {
+                    juce::Value otherButton = parameters.getParameterAsValue("arm" + std::to_string(i));
+                    otherButton = false;
+                }
             }
         }
     };
