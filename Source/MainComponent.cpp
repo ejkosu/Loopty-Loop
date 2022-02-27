@@ -69,13 +69,13 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     // Playback playing
     while (outputSamplesRemaining > 0)
     {
+        auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
+        auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
+        
         for (int i = 0; i < 4; i++)
         {
             if (fileBuffer[i].getNumSamples())
             {
-                auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
-                auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
-
                 for (auto channel = 0; channel < numOutputChannels; ++channel)
                 {
                     bufferToFill.buffer->addFrom(channel,
@@ -85,15 +85,14 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                         position,
                         samplesThisTime);
                 }
-
-                outputSamplesRemaining -= samplesThisTime;
-                outputSamplesOffset += samplesThisTime;
-                position += samplesThisTime;
-
-                if (position == fileBuffer[0].getNumSamples())
-                    position = 0;
             }
         }
+        outputSamplesRemaining -= samplesThisTime;
+        outputSamplesOffset += samplesThisTime;
+        position += samplesThisTime;
+
+        if (position == fileBuffer[0].getNumSamples())
+            position = 0;
     }
 }
 
