@@ -27,6 +27,7 @@ public:
 private:
     juce::AudioSampleBuffer fileBuffer[4];
     int position;
+    int recordingPosition;
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
     std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;

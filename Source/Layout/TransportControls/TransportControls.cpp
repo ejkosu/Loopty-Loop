@@ -79,7 +79,6 @@ void TransportControls::resized()
 
 void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {
-    //trackIndex not updating correctly after selecting first file.  It works for the first track selection, but then breaks.
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
 
     if (trackIndex >= 0 && trackIndex < 4) {

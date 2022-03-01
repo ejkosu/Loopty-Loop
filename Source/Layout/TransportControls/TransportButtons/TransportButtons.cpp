@@ -36,6 +36,19 @@ TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
         playback = false;
     };
 
+    // Record Button callback
+    this->recordBtn->onClick = [this] {
+        juce::Value recordValue = parameters.getParameterAsValue("record");
+        if ((bool)recordValue.getValue() == false)
+        {
+            recordValue = true;
+        }
+        else
+        {
+            recordValue = false;
+        }
+    };
+
 }
 
 TransportButtons::~TransportButtons()

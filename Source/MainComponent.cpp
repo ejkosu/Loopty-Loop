@@ -7,6 +7,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     parameters(vts)
 {
     position = 0;
+    recordingPosition = 0;
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
     audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
@@ -50,28 +51,72 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     auto numInputChannels = 2;
     auto numOutputChannels = 2;
 
-    auto outputSamplesRemaining = bufferToFill.numSamples;
-    auto outputSamplesOffset = bufferToFill.startSample;
+
 
     //Audio Input
     auto* device = deviceManager.getCurrentAudioDevice();
     auto activeInputChannels = device->getActiveInputChannels();
     auto activeOutputChannels = device->getActiveOutputChannels();
+
+
+
     //calculate the number of channels to process input from
     auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
     auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
+    auto inputSamplesRemaining = bufferToFill.numSamples;
+    auto inputSamplesOffset = bufferToFill.startSample;
+    
+    //check if the record button has been clicked
+    if (*parameters.getRawParameterValue("record") != 0.0f)
+    {
 
-    auto stopInput = true;
-    if (stopInput) {
+        //TODO initiaize the filebuffer that we are copying into!
+
+        //record input here!
+        // check which track is armed & convert to index for the fileBuffer
+        auto trackIndex = (int)*parameters.getRawParameterValue("armedTrackId") - 1; // -1 to correct index to the array of buffers
+        // check to make sure a track has been selected
+        if (trackIndex >= 0 && trackIndex < 4)
+        {
+            // copy input buffer to track aka fileBuffer 
+            while (inputSamplesRemaining > 0)
+            {
+                auto bufferSamplesRemaining = bufferToFill.numSamples - recordingPosition;
+                auto samplesThisTime = juce::jmin(inputSamplesRemaining, bufferSamplesRemaining);
+                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                {
+                    fileBuffer[trackIndex].copyFrom(channel,
+                        inputSamplesOffset,
+                        *bufferToFill.buffer,
+                        channel % numInputChannels,
+                        bufferToFill.startSample,
+                        samplesThisTime);
+                }
+
+                inputSamplesRemaining -= samplesThisTime;
+                inputSamplesOffset += samplesThisTime;
+                recordingPosition += samplesThisTime;
+            }
+        }
+    }
+    else 
+    {
+        // clear the input portion of the buffer to keep for passing it to the output
         for (auto channel = 0; channel < maxOutputChannels; ++channel)
         {
             bufferToFill.buffer->clear(channel, bufferToFill.startSample, bufferToFill.numSamples);
         }
     }
+
+    //Audio Output
+    auto outputSamplesRemaining = bufferToFill.numSamples;
+    auto outputSamplesOffset = bufferToFill.startSample;
+
     // Playback stopped
     // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
     // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
-    if (*parameters.getRawParameterValue("playback") == 0.0f) {
+    if (*parameters.getRawParameterValue("playback") == 0.0f) 
+    {
         for (int i = 0; i < 4; i++)
         {
             if (fileBuffer[i].getNumSamples())

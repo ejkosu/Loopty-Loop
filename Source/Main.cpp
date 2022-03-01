@@ -105,6 +105,10 @@ public:
                     "playback",
                     "Playback",
                     false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "record",
+                    "Record",
+                    false),
                 std::make_unique<juce::AudioParameterFloat>(
                     "pan1",
                     "Pan 1",
