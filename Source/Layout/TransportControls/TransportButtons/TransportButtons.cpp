@@ -14,10 +14,10 @@
 TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
     : parameters(vts)
 {
-    rewindBtn = new RewindButton(juce::String("Rewind"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
-    stopBtn = new StopButton(juce::String("Stop"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
-    playBtn = new PlayButton(juce::String("Play"), juce::Colours::green, juce::Colours::green, juce::Colours::green);
-    recordBtn = new RecordButton(juce::String("Record"), juce::Colours::red, juce::Colours::red, juce::Colours::red);
+    rewindBtn = std::make_unique<RewindButton>(juce::String("Rewind"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
+    stopBtn = std::make_unique<StopButton>(juce::String("Stop"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
+    playBtn = std::make_unique<PlayButton>(juce::String("Play"), juce::Colours::green, juce::Colours::green, juce::Colours::green);
+    recordBtn = std::make_unique<RecordButton>(juce::String("Record"), juce::Colours::red, juce::Colours::red, juce::Colours::red);
 
     addAndMakeVisible(*rewindBtn);
     addAndMakeVisible(*stopBtn);
@@ -40,10 +40,6 @@ TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
 
 TransportButtons::~TransportButtons()
 {
-    delete rewindBtn;
-    delete stopBtn;
-    delete playBtn;
-    delete recordBtn;
 
 }
 

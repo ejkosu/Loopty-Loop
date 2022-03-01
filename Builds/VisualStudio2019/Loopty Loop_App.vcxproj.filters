@@ -2720,6 +2720,7 @@
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Users\bench\Documents\JUCE\modules\juce_gui_extra\juce_gui_extra.mm">
+
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_audio_basics.cpp">
@@ -5320,6 +5321,7 @@
       <Filter>JUCE Modules\juce_gui_extra\native</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Users\bench\Documents\JUCE\modules\juce_gui_extra\juce_gui_extra.h">
+
       <Filter>JUCE Modules\juce_gui_extra</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\JuceHeader.h">

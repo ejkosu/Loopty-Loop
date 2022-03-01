@@ -105,6 +105,84 @@ public:
                     "playback",
                     "Playback",
                     false),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "pan1",
+                    "Pan 1",
+                    -1.0f,              // min
+                    1.0f,               // max
+                    0.0f),              // default
+                std::make_unique<juce::AudioParameterFloat>(
+                    "pan2",
+                    "Pan 2",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "pan3",
+                    "Pan 3",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "pan4",
+                    "Pan 4",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "slip1",
+                    "Slip 1",
+                    0.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "slip2",
+                    "Slip 2",
+                    0.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "slip3",
+                    "Slip 3",
+                    0.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "slip4",
+                    "Slip 4",
+                    0.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "gain0",
+                    "Gain 0",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "gain1",
+                    "Gain 1",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "gain2",
+                    "Gain 2",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "gain3",
+                    "Gain 3",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
+                std::make_unique<juce::AudioParameterFloat>(
+                    "gain4",
+                    "Gain 4",
+                    -1.0f,
+                    1.0f,
+                    0.0f),
                 std::make_unique<juce::AudioParameterInt>(
                     "armedTrackId",   // the track # of the armed track
                     "Armed Track #",
@@ -161,11 +239,12 @@ public:
         {
             setUsingNativeTitleBar(true);
             setContentOwned(new MainComponent(parameters), true);
-
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
            #else
             setResizable(true, true);
+            this->getConstrainer()->setFixedAspectRatio((double)800 / 600);
+            setResizeLimits(800, 600, 1600, 1200);
             centreWithSize(getWidth(), getHeight());
            #endif
 

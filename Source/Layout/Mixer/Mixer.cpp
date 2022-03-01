@@ -11,13 +11,13 @@
 #include "Mixer.h"
 
 //==============================================================================
-Mixer::Mixer()
+Mixer::Mixer(juce::AudioProcessorValueTreeState& vts)
 {
-    mainVolume = new GainSlider(juce::String("Main"), 0);
-    track1 = new GainSlider(juce::String("1"), 1);
-    track2 = new GainSlider(juce::String("2"), 2);
-    track3 = new GainSlider(juce::String("3"), 3);
-    track4 = new GainSlider(juce::String("4"), 4);
+    mainVolume = new GainSlider(juce::String("Main"), 0, vts);
+    track1 = new GainSlider(juce::String("1"), 1, vts);
+    track2 = new GainSlider(juce::String("2"), 2, vts);
+    track3 = new GainSlider(juce::String("3"), 3, vts);
+    track4 = new GainSlider(juce::String("4"), 4, vts);
     
     addAndMakeVisible(*mainVolume);
     addAndMakeVisible(*track1);

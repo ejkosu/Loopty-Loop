@@ -11,16 +11,30 @@
 #include "Knob.h"
 
 //==============================================================================
-Knob::Knob(juce::String& knobName, int trackNumber)
+Knob::Knob(juce::String& knobName, int trackNumber, juce::AudioProcessorValueTreeState& vts)
+    : parameters(vts)
 {
-    knob = new juce::Slider(knobName);
+    knob = std::make_unique<juce::Slider>(knobName);
     addAndMakeVisible(*knob);
     knob->setSliderStyle(juce::Slider::SliderStyle::Rotary);
     knob->setTextBoxStyle(juce::Slider::NoTextBox, true, 0, 0);
-    knob->setRange(-1.0f, 1.0f, 0.1f);
     knob->setValue(0.0f);
 
-    knobLabel = new juce::Label(knobName, knobName);
+    // ValueTreeState attachments
+    if (knobName == "Pan")
+    {
+        attachment.reset(new SliderAttachment(parameters,
+                                              "pan" + std::to_string(trackNumber),
+                                              *knob));
+    }
+    else if (knobName == "Slip")
+    {
+        attachment.reset(new SliderAttachment(parameters,
+                                              "slip" + std::to_string(trackNumber),
+                                              *knob));
+    }
+
+    knobLabel.reset(new juce::Label(knobName, knobName));
     addAndMakeVisible(*knobLabel);
     knobLabel->setText(knobName, juce::dontSendNotification);
     knobLabel->setJustificationType(juce::Justification::centred);
@@ -28,8 +42,6 @@ Knob::Knob(juce::String& knobName, int trackNumber)
 
 Knob::~Knob()
 {
-    delete knob;
-    delete knobLabel;
 }
 
 //void Knob::paint(juce::Graphics& g)

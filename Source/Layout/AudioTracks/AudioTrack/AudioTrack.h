@@ -32,8 +32,8 @@ private:
     juce::Label trackLabel;
     WaveformWindow trackWaveformWindow;
     TrackControlButtons controlButtonsArea;
-    Knob* panKnob;
-    Knob* slipKnob;
+    std::unique_ptr<Knob> panKnob;
+    std::unique_ptr<Knob> slipKnob;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioTrack)
 

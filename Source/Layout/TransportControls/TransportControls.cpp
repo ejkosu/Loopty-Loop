@@ -11,13 +11,24 @@
 
 
 //==============================================================================
-TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
-    : transportButtons(vts)
+
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent, juce::DialogWindow::LaunchOptions& dialogOptions)
+    : parameters(vts), transportButtons(vts)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
+    addAndMakeVisible(loadLoopButton);
+    addAndMakeVisible(saveLoopButton);
+    addAndMakeVisible(audioSettingsButton);
+
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent] {loadTrackButtonClicked(vts, fileBuffer, mainComponent); };
+    loadLoopButton.setButtonText("Load Loop");
+    loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
+    saveLoopButton.setButtonText("Save Loop");
+    saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
+    audioSettingsButton.setButtonText("Audio Settings");
+    audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
     formatManager.registerBasicFormats();
 }
 
@@ -37,15 +48,24 @@ void TransportControls::resized()
     using Track = juce::Grid::TrackInfo;
     using Fr = juce::Grid::Fr;
 
-    loadTrackButton.setSize(20, 10);
+
+    auto localBounds = getLocalBounds();
+
+    juce::GridItem::Margin transportMargin(getLocalBounds().getHeight() * 0.1f,
+                                           getLocalBounds().getWidth() * 0.1f,
+                                           getLocalBounds().getHeight() * 0.1f,
+                                           getLocalBounds().getWidth() * 0.1f);
+
     buttonGrid.templateRows = { Track(Fr(1)), Track(Fr(1)) };
     buttonGrid.templateColumns = { Track(Fr(1)), Track(Fr(1)),
                                    Track(Fr(1)), Track(Fr(1)) };
 
-    buttonGrid.items = { juce::GridItem(transportButtons).withArea(1, juce::GridItem::Span(4)), juce::GridItem(loadTrackButton) };
 
-    buttonGrid.justifyContent = juce::Grid::JustifyContent::center;
-    buttonGrid.alignContent = juce::Grid::AlignContent::center;
+    buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), 
+                         juce::GridItem(loadTrackButton).withMargin(20.0f),
+                         juce::GridItem(loadLoopButton).withMargin(20.0f),
+                         juce::GridItem(saveLoopButton).withMargin(20.0f),
+                         juce::GridItem(audioSettingsButton).withMargin(20.0f) };
 
     buttonGrid.performLayout(getLocalBounds());
 
@@ -56,6 +76,7 @@ void TransportControls::resized()
 *   in the Juce demos at:
 *   https://docs.juce.com/master/tutorial_playing_sound_files.html
 */
+
 void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {   
     //trackIndex not updating correctly after selecting first file.  It works for the first track selection, but then breaks.
@@ -92,8 +113,19 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                     }
                 }
             });
-    }else
+    }
+    else
     {
         perror("No track selected");
     }
+
+
+void TransportControls::loadLoopButtonClicked() {}
+
+void TransportControls::saveLoopButtonClicked() {}
+
+void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions)
+{
+    dialogOptions.launchAsync();
+
 }

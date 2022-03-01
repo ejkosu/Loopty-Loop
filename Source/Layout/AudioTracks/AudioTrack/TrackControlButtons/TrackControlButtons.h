@@ -28,10 +28,10 @@ public:
 private:
     int trackId;
 
-    juce::ToggleButton* armBtn;
-    juce::ToggleButton* muteBtn;
-    juce::ToggleButton* revBtn;
-    juce::ToggleButton* soloBtn;
+    std::unique_ptr<juce::ToggleButton> armBtn;
+    std::unique_ptr<juce::ToggleButton> muteBtn;
+    std::unique_ptr<juce::ToggleButton> revBtn;
+    std::unique_ptr<juce::ToggleButton> soloBtn;
 
     std::unique_ptr<ButtonAttachment> revAttachment;
     std::unique_ptr<ButtonAttachment> muteAttachment;

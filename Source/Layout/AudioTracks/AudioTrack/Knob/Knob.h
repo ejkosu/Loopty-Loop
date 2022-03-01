@@ -16,17 +16,23 @@ class Knob : public juce::Component
 {
 public:
     //==========================================================================
-    Knob(juce::String& knobName, int trackNumber);
+    Knob(juce::String& knobName, int trackNumber, juce::AudioProcessorValueTreeState& vts);
     ~Knob();
 
     //==========================================================================
     //void paint(juce::Graphics& g) override;
     void resized() override;
 
+    typedef juce::AudioProcessorValueTreeState::SliderAttachment SliderAttachment;
+
 private:
 
-    juce::Slider* knob;
-    juce::Label* knobLabel;
+    std::unique_ptr<juce::Slider> knob;
+    std::unique_ptr<juce::Label> knobLabel;
+
+    std::unique_ptr<SliderAttachment> attachment;
+
+    juce::AudioProcessorValueTreeState& parameters;
 
    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Knob)
 };

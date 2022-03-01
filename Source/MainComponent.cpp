@@ -2,14 +2,20 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, fileBuffer, this),
+    : mainLayout(vts, fileBuffer, this, dialogOptions),
+    juce::AudioAppComponent(deviceManager),
     parameters(vts)
 {
     position = 0;
+    // Set up for the audio device manager. We'll display this in a DialogWindow.
+    deviceManager.initialise(2, 2, nullptr, true);
+    audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
+    audioSettings->setSize(600, 500);
+    dialogOptions.dialogTitle = juce::String("Audio Settings");
+    dialogOptions.dialogBackgroundColour = juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
+    dialogOptions.content.set(&*audioSettings, false);
+
     addAndMakeVisible(mainLayout);
-    // Make sure you set the size of the component after
-    // you add any child components.
-    setSize(800, 600);
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -23,6 +29,8 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
         // Specify the number of input and output channels that we want to open
         setAudioChannels(0, 2);
     }
+
+    setSize(800, 600);
 }
 
 MainComponent::~MainComponent()

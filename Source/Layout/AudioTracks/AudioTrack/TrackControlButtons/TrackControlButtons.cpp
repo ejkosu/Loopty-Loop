@@ -14,11 +14,11 @@
 TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeState& vts)
     : trackId(id), parameters(vts)
 {
-    this->armBtn = new juce::ToggleButton("Arm");
-    this->muteBtn = new juce::ToggleButton("Mute");
+    armBtn = std::make_unique<juce::ToggleButton>("Arm");
+    muteBtn = std::make_unique<juce::ToggleButton>("Mute");
     // "Rev" text changed for demonstration of ValueTreeState
-    this->revBtn = new juce::ToggleButton("Rev");
-    this->soloBtn = new juce::ToggleButton("Solo");
+    revBtn = std::make_unique<juce::ToggleButton>("Rev");
+    soloBtn = std::make_unique<juce::ToggleButton>("Solo");
 
     // ValueTreeState attachments
     revAttachment.reset(new ButtonAttachment(parameters,
@@ -80,10 +80,7 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
 
 TrackControlButtons::~TrackControlButtons()
 {
-    delete armBtn;
-    delete muteBtn;
-    delete revBtn;
-    delete soloBtn;
+
 }
 
 void TrackControlButtons::paint(juce::Graphics& g)
@@ -96,8 +93,8 @@ void TrackControlButtons::paint(juce::Graphics& g)
     buttonsArea.templateRows = { Track(Fr(1)), Track(Fr(1)) };
     buttonsArea.templateColumns = { Track(Fr(1)), Track(Fr(1)) };
 
-    buttonsArea.items = { juce::GridItem(armBtn), juce::GridItem(revBtn),
-                         juce::GridItem(muteBtn), juce::GridItem(soloBtn) };
+    buttonsArea.items = { juce::GridItem(*armBtn), juce::GridItem(*revBtn),
+                         juce::GridItem(*muteBtn), juce::GridItem(*soloBtn) };
 
     buttonsArea.performLayout(getLocalBounds());
 }
