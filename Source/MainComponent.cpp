@@ -74,6 +74,22 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         return;
     }
 
+    //Audio Input
+    auto* device = deviceManager.getCurrentAudioDevice();
+    auto activeInputChannels = device->getActiveInputChannels();
+    auto activeOutputChannels = device->getActiveOutputChannels();
+    //calculate the number of channels to process input from
+    auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
+    auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
+    
+    auto stopInput = true;
+    if (stopInput) {
+       for (auto channel = 0; channel < maxOutputChannels; ++channel)
+       {
+            bufferToFill.buffer->clear(channel, bufferToFill.startSample, bufferToFill.numSamples);
+       }
+    }
+
     // Playback playing
     while (outputSamplesRemaining > 0)
     {
