@@ -11,7 +11,8 @@
 #include "TransportButtons.h"
 
 //==============================================================================
-TransportButtons::TransportButtons()
+TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
+    : parameters(vts)
 {
     rewindBtn = std::make_unique<RewindButton>(juce::String("Rewind"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
     stopBtn = std::make_unique<StopButton>(juce::String("Stop"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
@@ -22,6 +23,19 @@ TransportButtons::TransportButtons()
     addAndMakeVisible(*stopBtn);
     addAndMakeVisible(*playBtn);
     addAndMakeVisible(*recordBtn);
+
+    // Play callback
+    this->playBtn->onClick = [this] {
+        juce::Value playback = parameters.getParameterAsValue("playback");
+        playback = true;
+    };
+
+    // Stop callback
+    this->stopBtn->onClick = [this] {
+        juce::Value playback = parameters.getParameterAsValue("playback");
+        playback = false;
+    };
+
 }
 
 TransportButtons::~TransportButtons()

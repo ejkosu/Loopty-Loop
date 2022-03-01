@@ -20,7 +20,7 @@ class TransportButtons : public juce::Component
 {
 public:
     //==========================================================================
-    TransportButtons();
+    TransportButtons(juce::AudioProcessorValueTreeState& vts);
     ~TransportButtons();
 
     //==========================================================================
@@ -34,6 +34,7 @@ private:
     std::unique_ptr<PlayButton> playBtn;
     std::unique_ptr<RecordButton> recordBtn;
 
+    juce::AudioProcessorValueTreeState& parameters;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportButtons)
 };

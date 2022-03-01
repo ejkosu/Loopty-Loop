@@ -2,10 +2,11 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, dialogOptions), 
-      juce::AudioAppComponent(deviceManager),
-      parameters(vts)
+    : mainLayout(vts, fileBuffer, this, dialogOptions),
+    juce::AudioAppComponent(deviceManager),
+    parameters(vts)
 {
+    position = 0;
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
     audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
@@ -15,7 +16,6 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     dialogOptions.content.set(&*audioSettings, false);
 
     addAndMakeVisible(mainLayout);
-
 
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
@@ -27,7 +27,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     else
     {
         // Specify the number of input and output channels that we want to open
-        setAudioChannels(2, 2);
+        setAudioChannels(0, 2);
     }
 
     setSize(800, 600);
@@ -42,32 +42,74 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    // This function will be called when the audio device is started, or when
-    // its settings (i.e. sample rate, block size, etc) are changed.
-
-    // You can use this function to initialise any resources you might need,
-    // but be careful - it will be called on the audio thread, not the GUI thread.
-
-    // For more details, see the help for AudioProcessor::prepareToPlay()
+    
 }
 
-void MainComponent::getNextAudioBlock (const juce::AudioSourceChannelInfo& bufferToFill)
-{
-    // Your audio-processing code goes here!
+void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
+{   /* code adpated from https://docs.juce.com/master/tutorial_looping_audio_sample_buffer.html */
+    auto numInputChannels = 2;
+    auto numOutputChannels = 2;
 
-    // For more details, see the help for AudioProcessor::getNextAudioBlock()
+    auto outputSamplesRemaining = bufferToFill.numSamples;
+    auto outputSamplesOffset = bufferToFill.startSample;
 
-    // Right now we are not producing any data, in which case we need to clear the buffer
-    // (to prevent the output of random noise)
-    bufferToFill.clearActiveBufferRegion();
+    // Playback stopped
+    // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
+    // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
+    if (*parameters.getRawParameterValue("playback") == 0.0f) {
+        for (int i = 0; i < 4; i++)
+        {
+            if (fileBuffer[i].getNumSamples())
+            {
+                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                {
+                    bufferToFill.buffer->addSample(channel,
+                        outputSamplesOffset,
+                        0.0f);
+
+                    outputSamplesOffset += 1;
+                }
+            }
+        }
+        return;
+    }
+
+    // Playback playing
+    while (outputSamplesRemaining > 0)
+    {
+        auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
+        auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
+        
+        for (int i = 0; i < 4; i++)
+        {
+            if (fileBuffer[i].getNumSamples())
+            {
+                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                {
+                    bufferToFill.buffer->addFrom(channel,
+                        outputSamplesOffset,
+                        fileBuffer[i],
+                        channel % numInputChannels,
+                        position,
+                        samplesThisTime);
+                }
+            }
+        }
+        outputSamplesRemaining -= samplesThisTime;
+        outputSamplesOffset += samplesThisTime;
+        position += samplesThisTime;
+
+        if (position == fileBuffer[0].getNumSamples())
+            position = 0;
+    }
 }
 
 void MainComponent::releaseResources()
 {
-    // This will be called when the audio device stops, or when it is being
-    // restarted due to a setting change.
-
-    // For more details, see the help for AudioProcessor::releaseResources()
+    for (auto i = 0; i < 4; i++) 
+    {
+    fileBuffer[i].setSize(0, 0);
+    }
 }
 
 //==============================================================================

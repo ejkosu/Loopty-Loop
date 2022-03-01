@@ -25,11 +25,14 @@ public:
     void resized() override;
 
 private:
-
+    juce::AudioSampleBuffer fileBuffer[4];
+    int position;
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
     std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;
     juce::DialogWindow::LaunchOptions dialogOptions;
+    juce::AudioProcessorValueTreeState& parameters;
+
     juce::AudioProcessorValueTreeState& parameters;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
