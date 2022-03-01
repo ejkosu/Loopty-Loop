@@ -106,6 +106,9 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                             0,
                             true,
                             true);
+                        // Update the armed track ID in APVTS
+                        juce::Value playback = parameters.getParameterAsValue("playback");
+                        playback = true;
                     }
                     else
                     {

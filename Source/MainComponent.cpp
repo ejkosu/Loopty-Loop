@@ -27,7 +27,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     else
     {
         // Specify the number of input and output channels that we want to open
-        setAudioChannels(0, 2);
+        setAudioChannels(2, 2);
     }
 
     setSize(800, 600);
@@ -53,6 +53,21 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     auto outputSamplesRemaining = bufferToFill.numSamples;
     auto outputSamplesOffset = bufferToFill.startSample;
 
+    //Audio Input
+    auto* device = deviceManager.getCurrentAudioDevice();
+    auto activeInputChannels = device->getActiveInputChannels();
+    auto activeOutputChannels = device->getActiveOutputChannels();
+    //calculate the number of channels to process input from
+    auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
+    auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
+
+    auto stopInput = true;
+    if (stopInput) {
+        for (auto channel = 0; channel < maxOutputChannels; ++channel)
+        {
+            bufferToFill.buffer->clear(channel, bufferToFill.startSample, bufferToFill.numSamples);
+        }
+    }
     // Playback stopped
     // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
     // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
@@ -72,22 +87,6 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
             }
         }
         return;
-    }
-
-    //Audio Input
-    auto* device = deviceManager.getCurrentAudioDevice();
-    auto activeInputChannels = device->getActiveInputChannels();
-    auto activeOutputChannels = device->getActiveOutputChannels();
-    //calculate the number of channels to process input from
-    auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
-    auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
-    
-    auto stopInput = true;
-    if (stopInput) {
-       for (auto channel = 0; channel < maxOutputChannels; ++channel)
-       {
-            bufferToFill.buffer->clear(channel, bufferToFill.startSample, bufferToFill.numSamples);
-       }
     }
 
     // Playback playing
