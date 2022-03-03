@@ -194,7 +194,27 @@ public:
                     "Solo'd Track #",
                     0,
                     4,
-                    0)                // default of "0" means none soloed
+                    0),               // default of "0" means none soloed
+                std::make_unique<juce::AudioParameterBool>(
+                    "recording",
+                    "recording",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "isRecorded1",
+                    "Is Track 1 Recorded",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "isRecorded2",
+                    "Is Track 2 Recorded",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "isRecorded3",
+                    "Is Track 3 Recorded",
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "isRecorded4",
+                    "Is Track 4 Recorded",
+                    false)
             }));
 
         mainWindow.reset(new MainWindow(getApplicationName(), *parameters));

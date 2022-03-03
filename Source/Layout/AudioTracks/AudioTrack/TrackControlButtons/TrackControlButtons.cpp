@@ -35,9 +35,11 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
                                               *soloBtn));
 
     this->armBtn->onClick = [this] {
+        // needs to be debugged using setClickingToggleState(). if recording, just undo this click and return
         bool buttonState = this->armBtn->getToggleState();
+        bool isRecording = (bool)parameters.getParameterAsValue("isRecording").getValue();
 
-        if (buttonState == true)
+        if (buttonState == true && !isRecording)
         {
             // Update the armed track ID in APVTS
             juce::Value armedTrackId = parameters.getParameterAsValue("armedTrackId");

@@ -7,6 +7,13 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     parameters(vts)
 {
     position = 0;
+    // Set up the buffers for recorded input
+    recBuffer[0].setSize(2, 44100 * 30, false, true);
+    recBuffer[1].setSize(2, 44100 * 30, false, true);
+    recBuffer[2].setSize(2, 44100 * 30, false, true);
+    recBuffer[3].setSize(2, 44100 * 30, false, true);
+
+
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
     audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
@@ -53,27 +60,6 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     auto outputSamplesRemaining = bufferToFill.numSamples;
     auto outputSamplesOffset = bufferToFill.startSample;
 
-    // Playback stopped
-    // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
-    // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
-    if (*parameters.getRawParameterValue("playback") == 0.0f) {
-        for (int i = 0; i < 4; i++)
-        {
-            if (fileBuffer[i].getNumSamples())
-            {
-                for (auto channel = 0; channel < numOutputChannels; ++channel)
-                {
-                    bufferToFill.buffer->addSample(channel,
-                        outputSamplesOffset,
-                        0.0f);
-
-                    outputSamplesOffset += 1;
-                }
-            }
-        }
-        return;
-    }
-
     //Audio Input
     auto* device = deviceManager.getCurrentAudioDevice();
     auto activeInputChannels = device->getActiveInputChannels();
@@ -81,41 +67,135 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     //calculate the number of channels to process input from
     auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
     auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
-    
-    auto stopInput = true;
-    if (stopInput) {
-       for (auto channel = 0; channel < maxOutputChannels; ++channel)
-       {
-            bufferToFill.buffer->clear(channel, bufferToFill.startSample, bufferToFill.numSamples);
-       }
+
+    // Save the input if recording
+    if (*parameters.getRawParameterValue("recording") == 1.0f)
+    {
+        for (auto channel = 0; channel < maxOutputChannels; ++channel)
+        {
+            // If this output channel is inactive, do not save the input channel
+            if (activeOutputChannels[channel] && maxInputChannels > 0)
+            {
+                auto actualInputChannel = channel % maxInputChannels;
+                int armedTrackIndex = (int)parameters.getParameterAsValue("armedTrackId").getValue() - 1;
+
+                if (activeInputChannels[channel] && armedTrackIndex >= 0 && armedTrackIndex <= 3)
+                {
+                    auto* inBuffer = bufferToFill.buffer->getReadPointer(actualInputChannel, outputSamplesOffset);
+                    auto* outBuffer = recBuffer[armedTrackIndex].getWritePointer(channel, position);
+
+                    for (auto sample = 0; sample < outputSamplesRemaining; ++sample)
+                        outBuffer[sample] = inBuffer[sample];
+
+                    // Update the length in num. of samples for this recorded buffer
+                    recordedLengths[armedTrackIndex] = position + outputSamplesRemaining;
+
+                    bufferToFill.buffer->clear(channel, outputSamplesOffset, outputSamplesRemaining);
+                }
+            }
+        }
+    }
+
+    // Clear the input buffer
+    for (auto channel = 0; channel < maxOutputChannels; ++channel)
+    {
+        bufferToFill.buffer->clear(channel, outputSamplesOffset, outputSamplesRemaining);
+    }
+
+    // Playback stopped
+    // You must use getRawParameterValue in the audio thread! See this forum thread for explanation:
+    // https://forum.juce.com/t/update-audioprocessorvaluetreestate-from-process-block/17958/19
+    if (*parameters.getRawParameterValue("playback") == 0.0f) {
+        while (outputSamplesRemaining > 0)
+        {
+            for (auto channel = 0; channel < numOutputChannels; ++channel)
+            {
+                bufferToFill.buffer->addSample(channel,
+                    outputSamplesOffset,
+                    0.0f);
+            }
+            outputSamplesOffset += 1;
+            outputSamplesRemaining -= 1;
+        }
+        return;
     }
 
     // Playback playing
     while (outputSamplesRemaining > 0)
     {
-        auto bufferSamplesRemaining = fileBuffer[0].getNumSamples() - position;
-        auto samplesThisTime = juce::jmin(outputSamplesRemaining, bufferSamplesRemaining);
+        int maxSamplesWritten = 0;
         
         for (int i = 0; i < 4; i++)
         {
-            if (fileBuffer[i].getNumSamples())
+            // Determine if we are using the recorded buffer or the file buffer
+            if (*parameters.getRawParameterValue("recording") == 0.0f &&
+                *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) == 1.0f)
             {
-                for (auto channel = 0; channel < numOutputChannels; ++channel)
+                // Determine how many samples can be written
+                int recSamplesRemaining = recordedLengths[i] - position;
+                int samplesFromTrack = juce::jmin(outputSamplesRemaining, recSamplesRemaining);
+                if (samplesFromTrack > maxSamplesWritten)
+                    maxSamplesWritten = samplesFromTrack;
+
+                // Write the recorded samples
+                if (samplesFromTrack > 0)
                 {
-                    bufferToFill.buffer->addFrom(channel,
-                        outputSamplesOffset,
-                        fileBuffer[i],
-                        channel % numInputChannels,
-                        position,
-                        samplesThisTime);
+                    for (auto channel = 0; channel < numOutputChannels; ++channel)
+                    {
+                        bufferToFill.buffer->addFrom(channel,
+                            outputSamplesOffset,
+                            recBuffer[i],
+                            channel % numInputChannels,
+                            position,
+                            samplesFromTrack);
+                    }
+                }   
+            }
+            else if (fileBuffer[i].getNumSamples())
+            {
+                // Determine how many samples can be written
+                int fileSamplesRemaining = fileBuffer[i].getNumSamples() - position;
+                int samplesFromTrack = juce::jmin(outputSamplesRemaining, fileSamplesRemaining);
+                if (samplesFromTrack > maxSamplesWritten)
+                    maxSamplesWritten = samplesFromTrack;
+
+                // Write the file samples
+                if (samplesFromTrack > 0)
+                {
+                    for (auto channel = 0; channel < numOutputChannels; ++channel)
+                    {
+                        bufferToFill.buffer->addFrom(channel,
+                            outputSamplesOffset,
+                            fileBuffer[i],
+                            channel % numInputChannels,
+                            position,
+                            samplesFromTrack);
+                    }
                 }
             }
         }
-        outputSamplesRemaining -= samplesThisTime;
-        outputSamplesOffset += samplesThisTime;
-        position += samplesThisTime;
 
-        if (position == fileBuffer[0].getNumSamples())
+        // Advance the position pointer
+        if (maxSamplesWritten > 0)
+        {
+            outputSamplesRemaining -= maxSamplesWritten;
+            outputSamplesOffset += maxSamplesWritten;
+            position += maxSamplesWritten;
+        }
+        else
+        {
+            // If maxSamplesWritten = 0, then we are recording while nothing else is playing
+            position += outputSamplesRemaining;
+            outputSamplesOffset += outputSamplesRemaining;
+            outputSamplesRemaining = 0;
+        }
+
+
+        // Loop if position has passed the max number of samples and we aren't recording, OR
+        // the position is past 30 seconds
+        int maxSamples = getMaxNumSamples();
+        if ((position >= maxSamples && (*parameters.getRawParameterValue("recording") == 0.0f)) ||
+            position >= 1323000)
             position = 0;
     }
 }
@@ -143,4 +223,27 @@ void MainComponent::resized()
     // If you add any child components, this is where you should
     // update their positions.
     mainLayout.setBounds(0, 0, getWidth(), getHeight());
+}
+
+//=================================================================================
+inline int MainComponent::getMaxNumSamples()
+{
+    // Returns the maximum number of samples in any active buffer (either recBuffer or fileBuffer).
+    int max = 0;
+
+    for (int i = 0; i < 4; i++)
+    {
+        if (*parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) == 1.0f)
+        {
+            if (recordedLengths[i] > max) {
+                max = recordedLengths[i];
+            }
+        }
+        else if (fileBuffer[i].getNumSamples() > max)
+        {
+            max = fileBuffer[i].getNumSamples();
+        }
+    }
+
+    return max;
 }
