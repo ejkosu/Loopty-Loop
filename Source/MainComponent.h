@@ -24,9 +24,16 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
+    //==============================================================================
+    inline int getMaxNumSamples();
+
 private:
+    juce::AudioSampleBuffer recBuffer[4];
     juce::AudioSampleBuffer fileBuffer[4];
+
     int position;
+    int recordedLengths[4];
+
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
     std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;

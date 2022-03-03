@@ -34,8 +34,33 @@ TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
     this->stopBtn->onClick = [this] {
         juce::Value playback = parameters.getParameterAsValue("playback");
         playback = false;
+
+        juce::Value recording = parameters.getParameterAsValue("recording");
+        recording = false;
     };
 
+    // Record callback
+    this->recordBtn->onClick = [this] {
+        int armedTrackId = (int)parameters.getParameterAsValue("armedTrackId").getValue();
+        juce::Value recording = parameters.getParameterAsValue("recording");
+
+        // Stop recording if we are recording, else start recording
+        if ((bool)recording.getValue() == true)
+        {
+            recording = false;
+        }
+        else if (armedTrackId >= 1 && armedTrackId <= 4)
+        {
+            juce::Value recording = parameters.getParameterAsValue("recording");
+            recording = true;
+
+            juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(armedTrackId));
+            isRecorded = true;
+
+            juce::Value playback = parameters.getParameterAsValue("playback");
+            playback = true;
+        }
+    };
 }
 
 TransportButtons::~TransportButtons()

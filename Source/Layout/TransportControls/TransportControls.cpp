@@ -79,7 +79,6 @@ void TransportControls::resized()
 
 void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
 {
-    //trackIndex not updating correctly after selecting first file.  It works for the first track selection, but then breaks.
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
 
     if (trackIndex >= 0 && trackIndex < 4) {
@@ -89,7 +88,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
         auto fileChooserFlags = juce::FileBrowserComponent::openMode |
             juce::FileBrowserComponent::canSelectFiles;
 
-        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex, mainComponent](const juce::FileChooser& fc)
+        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex, mainComponent, &vts](const juce::FileChooser& fc)
             {
                 auto file = fc.getResult();
                 if (file == juce::File{}) return;
@@ -106,6 +105,10 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                             0,
                             true,
                             true);
+
+                        // Update the VTS so the track does not use its recorded buffer
+                        juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex));
+                        isRecorded = false;
                     }
                     else
                     {
