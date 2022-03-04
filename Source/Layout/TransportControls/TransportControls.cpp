@@ -12,8 +12,12 @@
 
 //==============================================================================
 
-TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent, juce::DialogWindow::LaunchOptions& dialogOptions)
-    : parameters(vts), transportButtons(vts)
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
+                                     juce::AudioSampleBuffer* fileBuffer,
+                                     juce::AudioAppComponent* mainComponent,
+                                     juce::DialogWindow::LaunchOptions& dialogOptions)
+    : parameters(vts),
+      transportButtons(vts)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);

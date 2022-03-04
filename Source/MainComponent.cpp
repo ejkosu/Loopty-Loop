@@ -3,8 +3,8 @@
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     : mainLayout(vts, fileBuffer, this, dialogOptions),
-    juce::AudioAppComponent(deviceManager),
-    parameters(vts)
+      juce::AudioAppComponent(deviceManager),
+      parameters(vts)
 {
     position = 0;
     // Set up the buffers for recorded input
