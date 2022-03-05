@@ -107,7 +107,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                             true);
 
                         // Update the VTS so the track does not use its recorded buffer
-                        juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex));
+                        juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex + 1));
                         isRecorded = false;
                     }
                     else
