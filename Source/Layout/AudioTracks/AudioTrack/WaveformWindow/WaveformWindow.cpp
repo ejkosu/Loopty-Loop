@@ -14,6 +14,7 @@
 WaveformWindow::WaveformWindow(int t, juce::AudioThumbnail** thumbnails)
 {
     this->thumbnail = thumbnails[t-1];
+    this->thumbnail->addChangeListener(this);
 }
 
 WaveformWindow::~WaveformWindow()
@@ -55,4 +56,12 @@ void WaveformWindow::drawWaveform(juce::Graphics& g, juce::Rectangle<int>& wavef
     g.fillRect(waveformBounds);
     g.setColour(juce::Colours::black);
     thumbnail->drawChannels(g, waveformBounds, 0.0f, thumbnail->getTotalLength(), 1.0f);
+}
+
+void WaveformWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
+{
+    if (source == thumbnail)
+    {
+        repaint();
+    }
 }

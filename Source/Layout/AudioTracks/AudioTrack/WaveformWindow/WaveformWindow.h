@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 
-class WaveformWindow : public juce::Component
+class WaveformWindow : public juce::Component, private juce::ChangeListener
 {
 public:
     //==========================================================================
@@ -22,6 +22,7 @@ public:
     //==========================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
+    void changeListenerCallback(juce::ChangeBroadcaster* source) override;
 
 private:
     
