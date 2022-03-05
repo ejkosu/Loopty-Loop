@@ -43,7 +43,8 @@ private:
 
     void loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts,
                                 juce::AudioSampleBuffer* fileBuffer,
-                                juce::AudioAppComponent* mainComponent);
+                                juce::AudioAppComponent* mainComponent,
+                                juce::AudioThumbnail** thumbnails);
     void loadLoopButtonClicked();
     void saveLoopButtonClicked();
     void audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions);
