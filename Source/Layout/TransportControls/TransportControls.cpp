@@ -15,7 +15,8 @@
 TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
                                      juce::AudioSampleBuffer* fileBuffer,
                                      juce::AudioAppComponent* mainComponent,
-                                     juce::DialogWindow::LaunchOptions& dialogOptions)
+                                     juce::DialogWindow::LaunchOptions& dialogOptions,
+                                     juce::AudioThumbnail** thumbnails)
     : parameters(vts),
       transportButtons(vts)
 {

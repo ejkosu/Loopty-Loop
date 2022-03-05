@@ -15,10 +15,11 @@
 MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts,
                                          juce::AudioSampleBuffer* fileBuffer,
                                          juce::AudioAppComponent* mainComponent,
-                                         juce::DialogWindow::LaunchOptions& dialogOptions)
-    : audioTracks(vts),
+                                         juce::DialogWindow::LaunchOptions& dialogOptions,
+                                         juce::AudioThumbnail** thumbnails)
+    : audioTracks(vts, thumbnails),
       mixer(vts),
-      transportControls(vts, fileBuffer, mainComponent, dialogOptions)
+      transportControls(vts, fileBuffer, mainComponent, dialogOptions, thumbnails)
 {
 
     addAndMakeVisible(audioTracks);

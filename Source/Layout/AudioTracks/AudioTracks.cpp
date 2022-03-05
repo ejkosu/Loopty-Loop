@@ -11,12 +11,12 @@
 #include "AudioTracks.h"
 
 //==============================================================================
-AudioTracks::AudioTracks(juce::AudioProcessorValueTreeState& vts)
+AudioTracks::AudioTracks(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
 {
-    audioTrack01 = std::make_unique<AudioTrack>(1, vts);
-    audioTrack02 = std::make_unique<AudioTrack>(2, vts);
-    audioTrack03 = std::make_unique<AudioTrack>(3, vts);
-    audioTrack04 = std::make_unique<AudioTrack>(4, vts);
+    audioTrack01 = std::make_unique<AudioTrack>(1, vts, thumbnails);
+    audioTrack02 = std::make_unique<AudioTrack>(2, vts, thumbnails);
+    audioTrack03 = std::make_unique<AudioTrack>(3, vts, thumbnails);
+    audioTrack04 = std::make_unique<AudioTrack>(4, vts, thumbnails);
     addAndMakeVisible(*audioTrack01);
     addAndMakeVisible(*audioTrack02);
     addAndMakeVisible(*audioTrack03);

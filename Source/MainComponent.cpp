@@ -1,8 +1,8 @@
 #include "MainComponent.h"
 
 //==============================================================================
-MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
-    : mainLayout(vts, fileBuffer, this, dialogOptions),
+MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
+    : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails),
       juce::AudioAppComponent(deviceManager),
       parameters(vts)
 {
@@ -12,7 +12,6 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
     recBuffer[1].setSize(2, 44100 * 30, false, true);
     recBuffer[2].setSize(2, 44100 * 30, false, true);
     recBuffer[3].setSize(2, 44100 * 30, false, true);
-
 
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
@@ -42,6 +41,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts)
 
 MainComponent::~MainComponent()
 {
+
     // This shuts down the audio device and clears the audio source.
     shutdownAudio();
 }
