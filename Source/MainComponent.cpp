@@ -151,7 +151,8 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                     }
                 }   
             }
-            else if (fileBuffer[i].getNumSamples())
+            else if (fileBuffer[i].getNumSamples() &&
+                     *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) != 1.0f)
             {
                 // Determine how many samples can be written
                 int fileSamplesRemaining = fileBuffer[i].getNumSamples() - position;
