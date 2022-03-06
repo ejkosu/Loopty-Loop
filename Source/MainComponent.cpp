@@ -6,6 +6,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
       juce::AudioAppComponent(deviceManager),
       parameters(vts)
 {
+    this->thumbnails = thumbnails;
     position = 0;
     // Set up the buffers for recorded input
     recBuffer[0].setSize(2, 44100 * 30, false, true);
@@ -68,16 +69,25 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     auto maxInputChannels = activeInputChannels.getHighestBit() + 1;
     auto maxOutputChannels = activeOutputChannels.getHighestBit() + 1;
 
+    int armedTrackIndex = (int)parameters.getParameterAsValue("armedTrackId").getValue() - 1;
+
     // Save the input if recording
     if (*parameters.getRawParameterValue("recording") == 1.0f)
     {
+        // If we are starting a new recording, clear the thumbnail and set up to
+        // write the waveform for a new one.
+        if (position == 0)
+        {
+            thumbnails[armedTrackIndex]->clear();
+            thumbnails[armedTrackIndex]->reset(numOutputChannels, 44100, 44100 * 30);
+        }
         for (auto channel = 0; channel < maxOutputChannels; ++channel)
         {
             // If this output channel is inactive, do not save the input channel
             if (activeOutputChannels[channel] && maxInputChannels > 0)
             {
                 auto actualInputChannel = channel % maxInputChannels;
-                int armedTrackIndex = (int)parameters.getParameterAsValue("armedTrackId").getValue() - 1;
+
 
                 if (activeInputChannels[channel] && armedTrackIndex >= 0 && armedTrackIndex <= 3)
                 {
@@ -85,11 +95,18 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                     auto* outBuffer = recBuffer[armedTrackIndex].getWritePointer(channel, position);
 
                     for (auto sample = 0; sample < outputSamplesRemaining; ++sample)
+                    {
                         outBuffer[sample] = inBuffer[sample];
+                    }
 
+                    // addBlock writes all channels to the thumbnail at once, so we want
+                    // to call it only on the first pass through the channel loop
+                    if (channel == 0)
+                    {
+                        thumbnails[armedTrackIndex]->addBlock(position, *bufferToFill.buffer, outputSamplesOffset, outputSamplesRemaining);
+                    }
                     // Update the length in num. of samples for this recorded buffer
                     recordedLengths[armedTrackIndex] = position + outputSamplesRemaining;
-
                     bufferToFill.buffer->clear(channel, outputSamplesOffset, outputSamplesRemaining);
                 }
             }
