@@ -12,8 +12,13 @@
 
 //==============================================================================
 
-TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent, juce::DialogWindow::LaunchOptions& dialogOptions)
-    : parameters(vts), transportButtons(vts)
+TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
+                                     juce::AudioSampleBuffer* fileBuffer,
+                                     juce::AudioAppComponent* mainComponent,
+                                     juce::DialogWindow::LaunchOptions& dialogOptions,
+                                     juce::AudioThumbnail** thumbnails)
+    : parameters(vts),
+      transportButtons(vts)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
@@ -22,7 +27,7 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts, ju
     addAndMakeVisible(audioSettingsButton);
 
     loadTrackButton.setButtonText("Load Track");
-    loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent] {loadTrackButtonClicked(vts, fileBuffer, mainComponent); };
+    loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent, thumbnails] {loadTrackButtonClicked(vts, fileBuffer, mainComponent, thumbnails); };
     loadLoopButton.setButtonText("Load Loop");
     loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
     saveLoopButton.setButtonText("Save Loop");
@@ -77,7 +82,7 @@ void TransportControls::resized()
 *   https://docs.juce.com/master/tutorial_playing_sound_files.html
 */
 
-void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent)
+void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent, juce::AudioThumbnail** thumbnails)
 {
     auto trackIndex = (int)vts.getParameterAsValue("armedTrackId").getValue() - 1; // -1 to correct index to the array of buffers
 
@@ -88,7 +93,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
         auto fileChooserFlags = juce::FileBrowserComponent::openMode |
             juce::FileBrowserComponent::canSelectFiles;
 
-        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex, mainComponent, &vts](const juce::FileChooser& fc)
+        fileChooser->launchAsync(fileChooserFlags, [this, fileBuffer, trackIndex, mainComponent, &vts, thumbnails](const juce::FileChooser& fc)
             {
                 auto file = fc.getResult();
                 if (file == juce::File{}) return;
@@ -106,6 +111,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                             true,
                             true);
 
+                        thumbnails[trackIndex]->setSource(new juce::FileInputSource(file));
                         // Update the VTS so the track does not use its recorded buffer
                         juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex + 1));
                         isRecorded = false;

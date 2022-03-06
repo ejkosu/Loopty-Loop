@@ -12,7 +12,7 @@ class MainComponent     :   public juce::AudioAppComponent
 {
 public:
     //==============================================================================
-    MainComponent(juce::AudioProcessorValueTreeState& vts);
+    MainComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails);
     ~MainComponent() override;
 
     //==============================================================================
@@ -39,6 +39,7 @@ private:
     std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;
     juce::DialogWindow::LaunchOptions dialogOptions;
     juce::AudioProcessorValueTreeState& parameters;
-
+    juce::AudioThumbnail** thumbnails;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

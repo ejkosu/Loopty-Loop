@@ -12,9 +12,16 @@
 
 //==============================================================================
 
-MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent,  juce::DialogWindow::LaunchOptions& dialogOptions)
-    : audioTracks(vts), mixer(vts), transportControls(vts, fileBuffer, mainComponent, dialogOptions)
+MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts,
+                                         juce::AudioSampleBuffer* fileBuffer,
+                                         juce::AudioAppComponent* mainComponent,
+                                         juce::DialogWindow::LaunchOptions& dialogOptions,
+                                         juce::AudioThumbnail** thumbnails)
+    : audioTracks(vts, thumbnails),
+      mixer(vts),
+      transportControls(vts, fileBuffer, mainComponent, dialogOptions, thumbnails)
 {
+
     addAndMakeVisible(audioTracks);
     addAndMakeVisible(transportControls);
     addAndMakeVisible(mixer);

@@ -17,7 +17,7 @@ class AudioTracks : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTracks(juce::AudioProcessorValueTreeState& vts);
+    AudioTracks(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails);
     ~AudioTracks();
 
     //==========================================================================
