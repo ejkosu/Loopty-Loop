@@ -160,8 +160,8 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         
         for (int i = 0; i < 4; i++)
         {
-            // Determine if this track should be silenced because of Solo
             bool soloSilence = getSoloSilence(i+1);
+            bool isReversed = *parameters.getRawParameterValue("rev" + std::to_string(i + 1)) == 1.0f;
             float gain = (*parameters.getRawParameterValue("gain0") *
                           *parameters.getRawParameterValue("gain" + std::to_string(i + 1)));
 
@@ -224,15 +224,24 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 {
                     // Write the file samples to the fxBuffer
                     fxBuffer.clear();
-                    for (auto channel = 0; channel < numOutputChannels; ++channel)
                     {
-                        fxBuffer.addFrom(channel,
-                            0,
-                            fileBuffer[i],
-                            channel % numInputChannels,
-                            position,
-                            samplesFromTrack,
-                            gain);
+                        for (auto channel = 0; channel < numOutputChannels; ++channel)
+                        {
+                            auto* inBuffer = fileBuffer[i].getReadPointer(channel, 0);
+                            auto* outBuffer = fxBuffer.getWritePointer(channel, 0);
+
+                            for (auto sample = 0; sample < samplesFromTrack; ++sample)
+                            {
+                                if (isReversed)
+                                {
+                                    outBuffer[sample] += inBuffer[fileBuffer[i].getNumSamples() - position - sample] * gain;
+                                }
+                                else
+                                {
+                                    outBuffer[sample] += inBuffer[position + sample] * gain;
+                                }
+                            }
+                        }
                     }
 
                     // Apply pan for this track
