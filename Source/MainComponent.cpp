@@ -149,9 +149,14 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         
         for (int i = 0; i < 4; i++)
         {
+            // Determine if this track should be silenced because of Solo
+            bool soloSilence = getSoloSilence(i+1);
+
             // Determine if we are using the recorded buffer or the file buffer
             if (*parameters.getRawParameterValue("recording") == 0.0f &&
-                *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) == 1.0f)
+                *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) == 1.0f &&
+                *parameters.getRawParameterValue("mute" + std::to_string(i + 1)) == 0.0f &&
+                !soloSilence)
             {
                 // Determine how many samples can be written
                 int recSamplesRemaining = recordedLengths[i] - position;
@@ -174,7 +179,9 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 }   
             }
             else if (fileBuffer[i].getNumSamples() &&
-                     *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) != 1.0f)
+                     *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) != 1.0f &&
+                     *parameters.getRawParameterValue("mute" + std::to_string(i + 1)) == 0.0f &&
+                     !soloSilence)
             {
                 // Determine how many samples can be written
                 int fileSamplesRemaining = fileBuffer[i].getNumSamples() - position;
@@ -269,4 +276,18 @@ inline int MainComponent::getMaxNumSamples()
     }
 
     return max;
+}
+
+// Returns a bool indicating if a track should be silenced because of Solo
+inline bool MainComponent::getSoloSilence(int trackId)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        if (*parameters.getRawParameterValue("solo" + std::to_string(i + 1)) == 1.0f &&
+            trackId != i + 1)
+        {
+                return true;
+        }
+    }
+    return false;
 }

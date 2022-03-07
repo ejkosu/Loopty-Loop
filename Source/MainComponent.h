@@ -26,6 +26,7 @@ public:
 
     //==============================================================================
     inline int getMaxNumSamples();
+    inline bool getSoloSilence(int trackId);
 
 private:
     juce::AudioSampleBuffer recBuffer[4];

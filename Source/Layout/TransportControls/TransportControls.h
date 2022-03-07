@@ -13,7 +13,7 @@
 #include <JuceHeader.h>
 #include "./TransportButtons/TransportButtons.h"
 
-class TransportControls : public juce::Component
+class TransportControls : public juce::Component, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==========================================================================
@@ -29,6 +29,8 @@ public:
     //==========================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
 private:
 

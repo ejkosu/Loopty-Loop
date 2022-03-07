@@ -228,7 +228,11 @@ public:
                 std::make_unique<juce::AudioParameterBool>(
                     "isRecorded4",
                     "Is Track 4 Recorded",
-                    false)
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "loadingFile",
+                    "loading File",
+                    false),
             }));
 
 
