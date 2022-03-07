@@ -20,8 +20,7 @@ MainLayoutComponent::MainLayoutComponent(juce::AudioProcessorValueTreeState& vts
                                          juce::AudioDeviceManager& manager)
     : audioTracks(vts, thumbnails),
       mixer(vts),
-      transportControls(vts, fileBuffer, mainComponent, dialogOptions, thumbnails),
-      deviceManager(manager)
+      transportControls(vts, fileBuffer, mainComponent, dialogOptions, thumbnails, manager)
 {
 
     addAndMakeVisible(audioTracks);
