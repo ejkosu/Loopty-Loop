@@ -24,16 +24,10 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
-    addAndMakeVisible(loadLoopButton);
-    addAndMakeVisible(saveLoopButton);
     addAndMakeVisible(audioSettingsButton);
 
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent, thumbnails] {loadTrackButtonClicked(vts, fileBuffer, mainComponent, thumbnails); };
-    loadLoopButton.setButtonText("Load Loop");
-    loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
-    saveLoopButton.setButtonText("Save Loop");
-    saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
     audioSettingsButton.setButtonText("Audio Settings");
     audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
     formatManager.registerBasicFormats();
@@ -70,8 +64,6 @@ void TransportControls::resized()
 
     buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), 
                          juce::GridItem(loadTrackButton).withMargin(20.0f),
-                         juce::GridItem(loadLoopButton).withMargin(20.0f),
-                         juce::GridItem(saveLoopButton).withMargin(20.0f),
                          juce::GridItem(audioSettingsButton).withMargin(20.0f) };
 
     buttonGrid.performLayout(getLocalBounds());
@@ -156,10 +148,6 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
         perror("No track selected");
     }
 }
-
-void TransportControls::loadLoopButtonClicked() {}
-
-void TransportControls::saveLoopButtonClicked() {}
 
 void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions)
 {
