@@ -11,8 +11,12 @@
 #include "WaveformWindow.h"
 
 //==============================================================================
-WaveformWindow::WaveformWindow(int t, juce::AudioThumbnail** thumbnails, juce::AudioProcessorValueTreeState& vts)
-    : parameters(vts), trackId(t)
+WaveformWindow::WaveformWindow(int t, juce::AudioThumbnail** thumbnails,
+                               juce::AudioProcessorValueTreeState& vts, 
+                               juce::AudioDeviceManager& manager)
+    : parameters(vts),
+      trackId(t),
+      deviceManager(manager)
 {
     this->thumbnail = thumbnails[t-1];
     this->thumbnail->addChangeListener(this);
@@ -69,12 +73,14 @@ void WaveformWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
 }
 void WaveformWindow::parameterChanged(const juce::String& parameterID, float newValue)
 {
+    auto device = deviceManager.getCurrentAudioDevice();
+    auto systemSampleRate = device->getCurrentSampleRate();
     juce::String isRecorded = "isRecorded" + std::to_string(trackId);
     
-    if (isRecorded.compare(isRecorded) == 0)
+    if (parameterID.compare(isRecorded) == 0)
     {
         thumbnail->clear();
-        thumbnail->reset(2, 44100, 44100 * 30);
+        thumbnail->reset(2, systemSampleRate, 44100 * 30);
     }
 
 }

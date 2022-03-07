@@ -18,7 +18,9 @@ class WaveformWindow : public juce::Component,
 {
 public:
     //==========================================================================
-    WaveformWindow(int t, juce::AudioThumbnail** thumbnails, juce::AudioProcessorValueTreeState& vts);
+    WaveformWindow(int t, juce::AudioThumbnail** thumbnails, 
+                   juce::AudioProcessorValueTreeState& vts,
+                   juce::AudioDeviceManager& manager);
     ~WaveformWindow();
 
     //==========================================================================
@@ -32,6 +34,7 @@ private:
     juce::Component waveformWindow;
     juce::AudioThumbnail* thumbnail;
     juce::AudioProcessorValueTreeState& parameters;
+    juce::AudioDeviceManager& deviceManager;
 
     void drawEmptyWindow(juce::Graphics& g, juce::Rectangle<int>& waveformBounds);
     void drawWaveform(juce::Graphics& g, juce::Rectangle<int>& waveformBounds);
