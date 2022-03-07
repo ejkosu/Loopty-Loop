@@ -4,7 +4,8 @@
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
     : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails, deviceManager),
       juce::AudioAppComponent(deviceManager),
-      parameters(vts)
+      parameters(vts),
+      fxChains()
 {
     this->thumbnails = thumbnails;
     position = 0;
@@ -15,6 +16,8 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
     recBuffer[1].setSize(2, recMaxLength, false, true);
     recBuffer[2].setSize(2, recMaxLength, false, true);
     recBuffer[3].setSize(2, recMaxLength, false, true);
+
+    fxBuffer.setSize(2, 8192, false, true);
 
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
@@ -52,7 +55,15 @@ MainComponent::~MainComponent()
 //==============================================================================
 void MainComponent::prepareToPlay (int samplesPerBlockExpected, double sampleRate)
 {
-    
+    // Prepare the fx processors used for panning
+    spec.maximumBlockSize = 8192;
+    spec.numChannels = 2;
+    spec.sampleRate = sampleRate;
+
+    for (int i = 0; i < 4; i++)
+    {
+        fxChains[i].prepare(spec);
+    }
 }
 
 void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& bufferToFill)
@@ -151,6 +162,8 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         {
             // Determine if this track should be silenced because of Solo
             bool soloSilence = getSoloSilence(i+1);
+            float gain = (*parameters.getRawParameterValue("gain0") *
+                          *parameters.getRawParameterValue("gain" + std::to_string(i + 1)));
 
             // Determine if we are using the recorded buffer or the file buffer
             if (*parameters.getRawParameterValue("recording") == 0.0f &&
@@ -164,19 +177,37 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 if (samplesFromTrack > maxSamplesWritten)
                     maxSamplesWritten = samplesFromTrack;
 
-                // Write the recorded samples
                 if (samplesFromTrack > 0)
                 {
+                    // Write the recorded samples to the fxBuffer
+                    fxBuffer.clear();
                     for (auto channel = 0; channel < numOutputChannels; ++channel)
                     {
-                        bufferToFill.buffer->addFrom(channel,
-                            outputSamplesOffset,
+                        fxBuffer.addFrom(channel,
+                            0,
                             recBuffer[i],
                             channel % numInputChannels,
                             position,
-                            samplesFromTrack);
+                            samplesFromTrack,
+                            gain);
                     }
-                }   
+
+                    // Apply pan for this track
+                    setPan(i, *parameters.getRawParameterValue("pan" + std::to_string(i + 1)));
+                    applyPan(i, fxBuffer, 0, samplesFromTrack);
+
+                    // Write from the fxBuffer to output
+                    for (auto channel = 0; channel < numOutputChannels; ++channel)
+                    {
+                        auto* inBuffer = fxBuffer.getReadPointer(channel, 0);
+                        auto* outBuffer = bufferToFill.buffer->getWritePointer(channel, outputSamplesOffset);
+
+                        for (auto sample = 0; sample < samplesFromTrack; ++sample)
+                        {
+                            outBuffer[sample] += inBuffer[sample];
+                        }
+                    }
+                }
             }
             else if (fileBuffer[i].getNumSamples() &&
                      *parameters.getRawParameterValue("isRecorded" + std::to_string(i + 1)) != 1.0f &&
@@ -189,17 +220,35 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 if (samplesFromTrack > maxSamplesWritten)
                     maxSamplesWritten = samplesFromTrack;
 
-                // Write the file samples
                 if (samplesFromTrack > 0)
                 {
+                    // Write the file samples to the fxBuffer
+                    fxBuffer.clear();
                     for (auto channel = 0; channel < numOutputChannels; ++channel)
                     {
-                        bufferToFill.buffer->addFrom(channel,
-                            outputSamplesOffset,
+                        fxBuffer.addFrom(channel,
+                            0,
                             fileBuffer[i],
                             channel % numInputChannels,
                             position,
-                            samplesFromTrack);
+                            samplesFromTrack,
+                            gain);
+                    }
+
+                    // Apply pan for this track
+                    setPan(i, *parameters.getRawParameterValue("pan" + std::to_string(i + 1)));
+                    applyPan(i, fxBuffer, 0, samplesFromTrack);
+
+                    // Write from the fxBuffer to output
+                    for (auto channel = 0; channel < numOutputChannels; ++channel)
+                    {
+                        auto* inBuffer = fxBuffer.getReadPointer(channel, 0);
+                        auto* outBuffer = bufferToFill.buffer->getWritePointer(channel, outputSamplesOffset);
+
+                        for (auto sample = 0; sample < samplesFromTrack; ++sample)
+                        {
+                            outBuffer[sample] += inBuffer[sample];
+                        }
                     }
                 }
             }
@@ -281,13 +330,29 @@ inline int MainComponent::getMaxNumSamples()
 // Returns a bool indicating if a track should be silenced because of Solo
 inline bool MainComponent::getSoloSilence(int trackId)
 {
-    for (int i = 0; i < 4; i++)
+    for (int i = 1; i <= 4; i++)
     {
-        if (*parameters.getRawParameterValue("solo" + std::to_string(i + 1)) == 1.0f &&
-            trackId != i + 1)
+        if (*parameters.getRawParameterValue("solo" + std::to_string(i)) == 1.0f &&
+            trackId != i)
         {
                 return true;
         }
     }
     return false;
+}
+
+// Applies pan to the given AudioBuffer based on the given track's panning level
+inline void MainComponent::applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples)
+{
+    auto block = juce::dsp::AudioBlock<float>(outputAudio);
+    auto blockToUse = block.getSubBlock((size_t)startSample, (size_t)numSamples);
+    auto contextToUse = juce::dsp::ProcessContextReplacing<float>(blockToUse);
+    fxChains[trackIndex].process(contextToUse);
+}
+
+// Sets the panning level for a given track
+inline void MainComponent::setPan(int trackIndex, float newValue)
+{
+    auto& panner = fxChains[trackIndex].template get<panIndex>();
+    panner.setPan(newValue);
 }

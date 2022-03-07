@@ -27,6 +27,8 @@ public:
     //==============================================================================
     inline int getMaxNumSamples();
     inline bool getSoloSilence(int trackId);
+    inline void applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples);
+    inline void setPan(int trackIndex, float newValue);
 
 private:
     juce::AudioSampleBuffer recBuffer[4];
@@ -35,6 +37,11 @@ private:
     int position;
     int recordedLengths[4];
     int recMaxLength;
+
+    enum { panIndex };
+    juce::dsp::ProcessSpec spec;
+    juce::dsp::ProcessorChain<juce::dsp::Panner<float>> fxChains[4];
+    juce::AudioSampleBuffer fxBuffer;
 
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
