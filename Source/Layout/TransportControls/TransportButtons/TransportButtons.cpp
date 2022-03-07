@@ -24,6 +24,9 @@ TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
     addAndMakeVisible(*playBtn);
     addAndMakeVisible(*recordBtn);
 
+    // Add custom parameter listener so Record button is disabled while loading a file
+    parameters.addParameterListener("loadingFile", this);
+
     // Play callback
     this->playBtn->onClick = [this] {
         juce::Value playback = parameters.getParameterAsValue("playback");
@@ -89,4 +92,16 @@ void TransportButtons::resized()
                             juce::GridItem(*recordBtn) };
 
     transportGrid.performLayout(getLocalBounds());
+}
+
+// Disable the record button while loading a file
+void TransportButtons::parameterChanged(const juce::String& parameterID, float newValue) {
+    if (parameterID == "loadingFile" && newValue == 1.0f)
+    {
+        this->recordBtn->setEnabled(false);
+    }
+    else
+    {
+        this->recordBtn->setEnabled(true);
+    }
 }

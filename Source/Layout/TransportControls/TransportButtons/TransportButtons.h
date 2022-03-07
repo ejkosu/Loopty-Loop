@@ -16,7 +16,7 @@
 #include "./RewindButton/RewindButton.h"
 #include "./StopButton/StopButton.h"
 
-class TransportButtons : public juce::Component
+class TransportButtons : public juce::Component, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==========================================================================
@@ -26,6 +26,8 @@ public:
     //==========================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
 private:
 

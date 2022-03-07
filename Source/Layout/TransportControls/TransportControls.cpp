@@ -28,9 +28,13 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
 
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent, thumbnails] {loadTrackButtonClicked(vts, fileBuffer, mainComponent, thumbnails); };
+
     audioSettingsButton.setButtonText("Audio Settings");
     audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
     formatManager.registerBasicFormats();
+
+    // Add custom parameter listener so Load Track button is disabled while recording
+    parameters.addParameterListener("recording", this);
 }
 
 TransportControls::~TransportControls()
@@ -97,6 +101,10 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                     auto duration = (float)reader->lengthInSamples / reader->sampleRate;
                     if (duration < 30)
                     {
+                        // Update the VTS to show loading in progress
+                        juce::Value loading = parameters.getParameterAsValue("loadingFile");
+                        loading = true;
+
                         // File reading / resampling based on this forum thread:
                         // https://forum.juce.com/t/resampling-an-audiosamplebuffer/14287/7
                         juce::AudioSampleBuffer temp;
@@ -105,7 +113,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                         deviceManager.getAudioDeviceSetup(currentAudioSetup);
                         double ratio = reader->sampleRate / currentAudioSetup.sampleRate;
 
-                        // Setup the temp buffer and fileBuffer
+                        // Set up the temp buffer and fileBuffer
                         temp.setSize((int)reader->numChannels, (int)reader->lengthInSamples);
                         temp.clear();
                         fileBuffer[trackIndex].setSize(2, (int)(((double)reader->lengthInSamples) / ratio));
@@ -135,6 +143,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                         // Update the VTS so the track does not use its recorded buffer
                         juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex + 1));
                         isRecorded = false;
+                        loading = false;
                     }
                     else
                     {
@@ -153,4 +162,20 @@ void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOpt
 {
     dialogOptions.launchAsync();
 
+    juce::Value playback = parameters.getParameterAsValue("playback");
+    juce::Value recording = parameters.getParameterAsValue("playback");
+    playback = false;
+    recording = false;
+}
+
+// Disable the Load Track button while recording
+void TransportControls::parameterChanged(const juce::String& parameterID, float newValue) {
+    if (parameterID == "recording" && newValue == 1.0f)
+    {
+        loadTrackButton.setEnabled(false);
+    }
+    else
+    {
+        loadTrackButton.setEnabled(true);
+    }
 }

@@ -8,7 +8,9 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent     :   public juce::AudioAppComponent
+class MainComponent     :   public juce::AudioAppComponent,
+                            juce::ChangeListener,
+                            juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -24,9 +26,6 @@ public:
     void paint(juce::Graphics& g) override;
     void resized() override;
 
-    //==============================================================================
-    inline int getMaxNumSamples();
-
 private:
     juce::AudioSampleBuffer recBuffer[4];
     juce::AudioSampleBuffer fileBuffer[4];
@@ -34,6 +33,12 @@ private:
     int position;
     int recordedLengths[4];
     int recMaxLength;
+    int slips[4];
+
+    enum { panIndex };
+    juce::dsp::ProcessSpec spec;
+    juce::dsp::ProcessorChain<juce::dsp::Panner<float>> fxChains[4];
+    juce::AudioSampleBuffer fxBuffer;
 
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
@@ -41,6 +46,14 @@ private:
     juce::DialogWindow::LaunchOptions dialogOptions;
     juce::AudioProcessorValueTreeState& parameters;
     juce::AudioThumbnail** thumbnails;
+
+    //==============================================================================
+    inline int getMaxNumSamples();
+    inline bool getSoloSilence(int trackId);
+    inline void applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples);
+    inline void setPan(int trackIndex, float newValue);
+    void changeListenerCallback(juce::ChangeBroadcaster* x) override;
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };

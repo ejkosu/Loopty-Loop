@@ -170,33 +170,33 @@ public:
                 std::make_unique<juce::AudioParameterFloat>(
                     "gain0",
                     "Gain 0",
-                    -1.0f,
+                    0.0f,
                     1.0f,
-                    0.0f),
+                    1.0f),
                 std::make_unique<juce::AudioParameterFloat>(
                     "gain1",
                     "Gain 1",
-                    -1.0f,
+                    0.0f,
                     1.0f,
-                    0.0f),
+                    1.0f),
                 std::make_unique<juce::AudioParameterFloat>(
                     "gain2",
                     "Gain 2",
-                    -1.0f,
+                    0.0f,
                     1.0f,
-                    0.0f),
+                    1.0f),
                 std::make_unique<juce::AudioParameterFloat>(
                     "gain3",
                     "Gain 3",
-                    -1.0f,
+                    0.0f,
                     1.0f,
-                    0.0f),
+                    1.0f),
                 std::make_unique<juce::AudioParameterFloat>(
                     "gain4",
                     "Gain 4",
-                    -1.0f,
+                    0.0f,
                     1.0f,
-                    0.0f),
+                    1.0f),
                 std::make_unique<juce::AudioParameterInt>(
                     "armedTrackId",   // the track # of the armed track
                     "Armed Track #",
@@ -228,7 +228,11 @@ public:
                 std::make_unique<juce::AudioParameterBool>(
                     "isRecorded4",
                     "Is Track 4 Recorded",
-                    false)
+                    false),
+                std::make_unique<juce::AudioParameterBool>(
+                    "loadingFile",
+                    "loading File",
+                    false),
             }));
 
 
