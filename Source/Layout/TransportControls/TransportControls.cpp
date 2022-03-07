@@ -34,6 +34,7 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
     loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
     saveLoopButton.setButtonText("Save Loop");
     saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
+
     audioSettingsButton.setButtonText("Audio Settings");
     audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
     formatManager.registerBasicFormats();
@@ -173,6 +174,10 @@ void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOpt
 {
     dialogOptions.launchAsync();
 
+    juce::Value playback = parameters.getParameterAsValue("playback");
+    juce::Value recording = parameters.getParameterAsValue("playback");
+    playback = false;
+    recording = false;
 }
 
 // Disable the Load Track button while recording

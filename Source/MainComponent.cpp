@@ -21,6 +21,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
 
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
+    deviceManager.addChangeListener(this);
     audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
     audioSettings->setSize(600, 500);
     dialogOptions.dialogTitle = juce::String("Audio Settings");
@@ -47,7 +48,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
 
 MainComponent::~MainComponent()
 {
-
+    deviceManager.removeChangeListener(this);
     // This shuts down the audio device and clears the audio source.
     shutdownAudio();
 }
@@ -366,4 +367,21 @@ inline void MainComponent::setPan(int trackIndex, float newValue)
 {
     auto& panner = fxChains[trackIndex].template get<panIndex>();
     panner.setPan(newValue);
+}
+
+// Update the sample rate for the fxChains when sample rate is changed
+void MainComponent::changeListenerCallback(juce::ChangeBroadcaster* x)
+{
+    juce::dsp::ProcessSpec newSpec{};
+    juce::AudioDeviceManager::AudioDeviceSetup newAudioSetup;
+    deviceManager.getAudioDeviceSetup(newAudioSetup);
+
+    newSpec.maximumBlockSize = 8192;
+    newSpec.numChannels = 2;
+    newSpec.sampleRate = newAudioSetup.sampleRate;
+
+    for (int i = 0; i < 4; i++)
+    {
+        fxChains[i].prepare(spec);
+    }
 }

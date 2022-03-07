@@ -8,7 +8,8 @@
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class MainComponent     :   public juce::AudioAppComponent
+class MainComponent     :   public juce::AudioAppComponent,
+                            public juce::ChangeListener
 {
 public:
     //==============================================================================
@@ -23,12 +24,6 @@ public:
     //==============================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
-
-    //==============================================================================
-    inline int getMaxNumSamples();
-    inline bool getSoloSilence(int trackId);
-    inline void applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples);
-    inline void setPan(int trackIndex, float newValue);
 
 private:
     juce::AudioSampleBuffer recBuffer[4];
@@ -49,6 +44,13 @@ private:
     juce::DialogWindow::LaunchOptions dialogOptions;
     juce::AudioProcessorValueTreeState& parameters;
     juce::AudioThumbnail** thumbnails;
+
+    //==============================================================================
+    inline int getMaxNumSamples();
+    inline bool getSoloSilence(int trackId);
+    inline void applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples);
+    inline void setPan(int trackIndex, float newValue);
+    void changeListenerCallback(juce::ChangeBroadcaster* x) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
