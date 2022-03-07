@@ -30,6 +30,20 @@ public:
     //==============================================================================
     void initialise(const juce::String& commandLine) override
     {
+
+        // Set up audio format manager
+        formatManager.registerBasicFormats();
+
+        // AudioThumbnail does not have a default constructor, so we can't use
+        // simple array syntax to create them in an array. We have to use the
+        // double pointer approach.
+        thumbnailCache = std::make_unique<juce::AudioThumbnailCache>(5);
+        thumbnails = new juce::AudioThumbnail * [4];
+        for (auto i = 0; i < 4; i++)
+        {
+            thumbnails[i] = new juce::AudioThumbnail(512, formatManager, *thumbnailCache);
+        }
+
         // Init the global parameter state
         audioProcessor.reset(new LooptyLoopAudioProcessor());
         parameters.reset(new juce::AudioProcessorValueTreeState(
@@ -217,12 +231,20 @@ public:
                     false)
             }));
 
-        mainWindow.reset(new MainWindow(getApplicationName(), *parameters));
+
+        mainWindow.reset(new MainWindow(getApplicationName(), *parameters, thumbnails));
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
+
+        for (auto i = 0; i < 4; i++)
+        {
+            delete thumbnails[i];
+        }
+        delete[] thumbnails;
+
 
         mainWindow = nullptr; // (deletes our window)
     }
@@ -250,7 +272,7 @@ public:
     class MainWindow    :   public juce::DocumentWindow
     {
     public:
-        MainWindow (juce::String name, juce::AudioProcessorValueTreeState& vts)
+        MainWindow (juce::String name, juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
@@ -258,7 +280,7 @@ public:
             parameters(vts)
         {
             setUsingNativeTitleBar(true);
-            setContentOwned(new MainComponent(parameters), true);
+            setContentOwned(new MainComponent(parameters, thumbnails), true);
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen(true);
            #else
@@ -295,6 +317,10 @@ private:
     std::unique_ptr<MainWindow> mainWindow;
     std::unique_ptr<LooptyLoopAudioProcessor> audioProcessor;
     std::unique_ptr<juce::AudioProcessorValueTreeState> parameters;
+
+    juce::AudioFormatManager formatManager;
+    std::unique_ptr<juce::AudioThumbnailCache> thumbnailCache;
+    juce::AudioThumbnail** thumbnails;
 };
 
 //==============================================================================

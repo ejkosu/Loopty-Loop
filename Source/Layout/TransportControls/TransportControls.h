@@ -17,7 +17,12 @@ class TransportControls : public juce::Component
 {
 public:
     //==========================================================================
-    TransportControls(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent, juce::DialogWindow::LaunchOptions& dialogOptions);
+    TransportControls(juce::AudioProcessorValueTreeState& vts, 
+                      juce::AudioSampleBuffer* fileBuffer,
+                      juce::AudioAppComponent* mainComponent,
+                      juce::DialogWindow::LaunchOptions& dialogOptions,
+                      juce::AudioThumbnail** thumbnails);
+
     ~TransportControls();
 
     //==========================================================================
@@ -36,7 +41,10 @@ private:
     juce::AudioFormatManager formatManager;
     juce::AudioProcessorValueTreeState& parameters;
 
-    void loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts, juce::AudioSampleBuffer* fileBuffer, juce::AudioAppComponent* mainComponent);
+    void loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts,
+                                juce::AudioSampleBuffer* fileBuffer,
+                                juce::AudioAppComponent* mainComponent,
+                                juce::AudioThumbnail** thumbnails);
     void loadLoopButtonClicked();
     void saveLoopButtonClicked();
     void audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions);

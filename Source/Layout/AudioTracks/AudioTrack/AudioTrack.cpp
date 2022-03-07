@@ -11,8 +11,9 @@
 #include "AudioTrack.h"
 
 //==============================================================================
-AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts)
-    : controlButtonsArea(t, vts)
+AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
+    : trackWaveformWindow(t, thumbnails),
+      controlButtonsArea(t, vts)
 {
     trackNumber = t;
     addAndMakeVisible(trackLabel);
