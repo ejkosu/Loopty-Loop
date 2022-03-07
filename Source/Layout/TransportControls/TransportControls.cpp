@@ -28,10 +28,6 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
 
     loadTrackButton.setButtonText("Load Track");
     loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent, thumbnails] {loadTrackButtonClicked(vts, fileBuffer, mainComponent, thumbnails); };
-    loadLoopButton.setButtonText("Load Loop");
-    loadLoopButton.onClick = [this] {loadLoopButtonClicked(); };
-    saveLoopButton.setButtonText("Save Loop");
-    saveLoopButton.onClick = [this] {saveLoopButtonClicked(); };
 
     audioSettingsButton.setButtonText("Audio Settings");
     audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
