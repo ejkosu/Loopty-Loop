@@ -8,7 +8,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
 {
     this->thumbnails = thumbnails;
     position = 0;
-    recMaxLength = 661500; // 15 sec at 44100khz
+    recMaxLength = 1323000; // 30 sec at 44100khz
 
     // Set up the buffers for recorded input
     recBuffer[0].setSize(2, recMaxLength, false, true);
@@ -107,7 +107,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                     // to call it only on the first pass through the channel loop
                     if (channel == 0)
                     {
-                       thumbnails[armedTrackIndex]->addBlock(position, *bufferToFill.buffer, outputSamplesOffset, outputSamplesRemaining);
+                        thumbnails[armedTrackIndex]->addBlock(position, *bufferToFill.buffer, outputSamplesOffset, outputSamplesRemaining);
                     }
 
                     // Update the length in num. of samples for this recorded buffer
@@ -218,7 +218,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         // the position is past 30 seconds
         int maxSamples = getMaxNumSamples();
         if ((position >= maxSamples && (*parameters.getRawParameterValue("recording") == 0.0f)) ||
-            position >= 661500)
+            position >= 1323000)
             position = 0;
     }
 }
