@@ -21,7 +21,8 @@ public:
                       juce::AudioSampleBuffer* fileBuffer,
                       juce::AudioAppComponent* mainComponent,
                       juce::DialogWindow::LaunchOptions& dialogOptions,
-                      juce::AudioThumbnail** thumbnails);
+                      juce::AudioThumbnail** thumbnails,
+                      juce::AudioDeviceManager& manager);
 
     ~TransportControls();
 
@@ -39,6 +40,7 @@ private:
     juce::TextButton audioSettingsButton;
     std::unique_ptr<juce::FileChooser> fileChooser;
     juce::AudioFormatManager formatManager;
+    juce::AudioDeviceManager& deviceManager;
     juce::AudioProcessorValueTreeState& parameters;
 
     void loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts,

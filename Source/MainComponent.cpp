@@ -2,17 +2,19 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
-    : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails),
+    : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails, deviceManager),
       juce::AudioAppComponent(deviceManager),
       parameters(vts)
 {
     this->thumbnails = thumbnails;
     position = 0;
+    recMaxLength = 661500; // 15 sec at 44100khz
+
     // Set up the buffers for recorded input
-    recBuffer[0].setSize(2, 44100 * 30, false, true);
-    recBuffer[1].setSize(2, 44100 * 30, false, true);
-    recBuffer[2].setSize(2, 44100 * 30, false, true);
-    recBuffer[3].setSize(2, 44100 * 30, false, true);
+    recBuffer[0].setSize(2, recMaxLength, false, true);
+    recBuffer[1].setSize(2, recMaxLength, false, true);
+    recBuffer[2].setSize(2, recMaxLength, false, true);
+    recBuffer[3].setSize(2, recMaxLength, false, true);
 
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
@@ -93,20 +95,23 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 {
                     auto* inBuffer = bufferToFill.buffer->getReadPointer(actualInputChannel, outputSamplesOffset);
                     auto* outBuffer = recBuffer[armedTrackIndex].getWritePointer(channel, position);
+                    int recSamplesWritten = 0;
 
-                    for (auto sample = 0; sample < outputSamplesRemaining; ++sample)
+                    for (auto sample = 0; (sample < outputSamplesRemaining) && (sample < recMaxLength); ++sample)
                     {
                         outBuffer[sample] = inBuffer[sample];
+                        ++recSamplesWritten;
                     }
 
                     // addBlock writes all channels to the thumbnail at once, so we want
                     // to call it only on the first pass through the channel loop
                     if (channel == 0)
                     {
-                        thumbnails[armedTrackIndex]->addBlock(position, *bufferToFill.buffer, outputSamplesOffset, outputSamplesRemaining);
+                       thumbnails[armedTrackIndex]->addBlock(position, *bufferToFill.buffer, outputSamplesOffset, outputSamplesRemaining);
                     }
+
                     // Update the length in num. of samples for this recorded buffer
-                    recordedLengths[armedTrackIndex] = position + outputSamplesRemaining;
+                    recordedLengths[armedTrackIndex] = position + recSamplesWritten;
                     bufferToFill.buffer->clear(channel, outputSamplesOffset, outputSamplesRemaining);
                 }
             }
@@ -213,7 +218,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         // the position is past 30 seconds
         int maxSamples = getMaxNumSamples();
         if ((position >= maxSamples && (*parameters.getRawParameterValue("recording") == 0.0f)) ||
-            position >= 1323000)
+            position >= 661500)
             position = 0;
     }
 }

@@ -16,9 +16,11 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
                                      juce::AudioSampleBuffer* fileBuffer,
                                      juce::AudioAppComponent* mainComponent,
                                      juce::DialogWindow::LaunchOptions& dialogOptions,
-                                     juce::AudioThumbnail** thumbnails)
+                                     juce::AudioThumbnail** thumbnails,
+                                     juce::AudioDeviceManager& manager)
     : parameters(vts),
-      transportButtons(vts)
+      transportButtons(vts),
+      deviceManager(manager)
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
@@ -107,7 +109,9 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                         // https://forum.juce.com/t/resampling-an-audiosamplebuffer/14287/7
                         juce::AudioSampleBuffer temp;
                         juce::ScopedPointer<juce::LagrangeInterpolator> resampler = new juce::LagrangeInterpolator();
-                        double ratio = reader->sampleRate / 48000.0;
+                        juce::AudioDeviceManager::AudioDeviceSetup currentAudioSetup;
+                        deviceManager.getAudioDeviceSetup(currentAudioSetup);
+                        double ratio = reader->sampleRate / currentAudioSetup.sampleRate;
 
                         // Setup the temp buffer and fileBuffer
                         temp.setSize((int)reader->numChannels, (int)reader->lengthInSamples);
@@ -133,7 +137,9 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                             resampler->process(ratio, inputs[0], outputs[1], fileBuffer[trackIndex].getNumSamples());
                         }
 
+                        // Set the thumbnail source
                         thumbnails[trackIndex]->setSource(new juce::FileInputSource(file));
+
                         // Update the VTS so the track does not use its recorded buffer
                         juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex + 1));
                         isRecorded = false;

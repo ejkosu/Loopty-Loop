@@ -38,5 +38,7 @@ private:
     TransportControls transportControls;
     Mixer mixer;
 
+    juce::AudioDeviceManager& deviceManager;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainLayoutComponent)
 };
