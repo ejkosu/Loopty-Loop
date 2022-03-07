@@ -33,7 +33,7 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
                                               "solo" + std::to_string(trackId),
                                               *soloBtn));
 
-    // Add custom parameter listener so "Arm" buttons are disabled when recording
+    // Add custom parameter listener
     parameters.addParameterListener("recording", this);
 
     this->armBtn->onClick = [this] {
@@ -106,13 +106,13 @@ void TrackControlButtons::resized()
 {
 }
 
-// Disable "Arm" buttons when recording
 void TrackControlButtons::parameterChanged(const juce::String& parameterID, float newValue) {
+    // Disable "Arm" buttons when recording
     if (parameterID == "recording" && newValue == 1.0f)
     {
         this->armBtn->setEnabled(false);
     }
-    else
+    else if (parameterID == "recording")
     {
         this->armBtn->setEnabled(true);
     }

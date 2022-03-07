@@ -5,11 +5,13 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
     : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails, deviceManager),
       juce::AudioAppComponent(deviceManager),
       parameters(vts),
-      fxChains()
+      fxChains(),
+      slips()
 {
     this->thumbnails = thumbnails;
     position = 0;
     recMaxLength = 1323000; // 30 sec at 44100khz
+    fxBuffer.setSize(2, 8192, false, true);
 
     // Set up the buffers for recorded input
     recBuffer[0].setSize(2, recMaxLength, false, true);
@@ -17,7 +19,16 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
     recBuffer[2].setSize(2, recMaxLength, false, true);
     recBuffer[3].setSize(2, recMaxLength, false, true);
 
-    fxBuffer.setSize(2, 8192, false, true);
+    // Set up custom parameter listeners
+    parameters.addParameterListener("playback", this);
+    parameters.addParameterListener("arm1", this);
+    parameters.addParameterListener("arm2", this);
+    parameters.addParameterListener("arm3", this);
+    parameters.addParameterListener("arm4", this);
+    parameters.addParameterListener("solo1", this);
+    parameters.addParameterListener("solo2", this);
+    parameters.addParameterListener("solo3", this);
+    parameters.addParameterListener("solo4", this);
 
     // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
@@ -158,6 +169,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
             bool isReversed = *parameters.getRawParameterValue("rev" + std::to_string(i + 1)) == 1.0f;
             float gain = (*parameters.getRawParameterValue("gain0") *
                           *parameters.getRawParameterValue("gain" + std::to_string(i + 1)));
+            int slip = slips[i]; // 0.25 seconds at 44.1khz
 
             // Determine if we are using the recorded buffer or the file buffer
             if (*parameters.getRawParameterValue("recording") == 0.0f &&
@@ -166,7 +178,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 !soloSilence)
             {
                 // Determine how many samples can be written
-                int recSamplesRemaining = recordedLengths[i] - position;
+                int recSamplesRemaining = recordedLengths[i] - position - slip;
                 int samplesFromTrack = juce::jmin(outputSamplesRemaining, recSamplesRemaining);
                 if (samplesFromTrack > maxSamplesWritten)
                     maxSamplesWritten = samplesFromTrack;
@@ -185,11 +197,11 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                             {
                                 if (isReversed)
                                 {
-                                    outBuffer[sample] += inBuffer[recordedLengths[i] - position - sample] * gain;
+                                    outBuffer[sample] += inBuffer[recordedLengths[i] - position - slip - sample] * gain;
                                 }
                                 else
                                 {
-                                    outBuffer[sample] += inBuffer[position + sample] * gain;
+                                    outBuffer[sample] += inBuffer[position + slip + sample] * gain;
                                 }
                             }
                         }
@@ -218,7 +230,7 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                      !soloSilence)
             {
                 // Determine how many samples can be written
-                int fileSamplesRemaining = fileBuffer[i].getNumSamples() - position;
+                int fileSamplesRemaining = fileBuffer[i].getNumSamples() - position - slip;
                 int samplesFromTrack = juce::jmin(outputSamplesRemaining, fileSamplesRemaining);
                 if (samplesFromTrack > maxSamplesWritten)
                     maxSamplesWritten = samplesFromTrack;
@@ -237,11 +249,11 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                             {
                                 if (isReversed)
                                 {
-                                    outBuffer[sample] += inBuffer[fileBuffer[i].getNumSamples() - position - sample] * gain;
+                                    outBuffer[sample] += inBuffer[fileBuffer[i].getNumSamples() - position - slip - sample] * gain;
                                 }
                                 else
                                 {
-                                    outBuffer[sample] += inBuffer[position + sample] * gain;
+                                    outBuffer[sample] += inBuffer[position + sample + slip] * gain;
                                 }
                             }
                         }
@@ -287,7 +299,16 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
         int maxSamples = getMaxNumSamples();
         if ((position >= maxSamples && (*parameters.getRawParameterValue("recording") == 0.0f)) ||
             position >= 1323000)
+        {
+            // Reset the position
             position = 0;
+
+            // Update the slip values (max 0.25sec at 44.1khz)
+            for (int i = 0; i < 4; i++)
+            {
+                slips[i] = (int)(11025 * *parameters.getRawParameterValue("slip" + std::to_string(i + 1)));
+            }
+        }
     }
 }
 
@@ -383,5 +404,66 @@ void MainComponent::changeListenerCallback(juce::ChangeBroadcaster* x)
     for (int i = 0; i < 4; i++)
     {
         fxChains[i].prepare(spec);
+    }
+}
+
+
+void MainComponent::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    // Update the slip values based on the VTS when paused at position = 0
+    if (position == 0 && *parameters.getRawParameterValue("playback") == 0.0f)
+    {
+        if (parameterID == "slip1" ||
+            parameterID == "slip2" ||
+            parameterID == "slip3" ||
+            parameterID == "slip4")
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                slips[i] = (int)(11025 * *parameters.getRawParameterValue("slip" + std::to_string(i + 1)));
+            }
+        }
+    }
+
+    // Update the armed track ID when Arm buttons are clicked
+    if (parameterID == "arm1" ||
+        parameterID == "arm2" ||
+        parameterID == "arm3" ||
+        parameterID == "arm4")
+    {
+        int armedTrackId = 0;
+
+        for (int i = 1; i <= 4; i++)
+        {
+            float buttonState = *parameters.getRawParameterValue("arm" + std::to_string(i));
+            if (buttonState == 1.0f)
+            {
+                armedTrackId = i;
+            }
+        }
+
+        juce::Value val = parameters.getParameterAsValue("armedTrackId");
+        val = armedTrackId;
+    }
+
+    // Update the soloed track ID when Solo buttons are clicked
+    if (parameterID == "solo1" ||
+        parameterID == "solo2" ||
+        parameterID == "solo3" ||
+        parameterID == "solo4")
+    {
+        int soloedTrackId = 0;
+
+        for (int i = 1; i <= 4; i++)
+        {
+            float buttonState = *parameters.getRawParameterValue("solo" + std::to_string(i));
+            if (buttonState == 1.0f)
+            {
+                soloedTrackId = i;
+            }
+        }
+
+        juce::Value val = parameters.getParameterAsValue("soloedTrackId");
+        val = soloedTrackId;
     }
 }

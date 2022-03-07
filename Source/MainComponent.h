@@ -9,7 +9,8 @@
     your controls and content.
 */
 class MainComponent     :   public juce::AudioAppComponent,
-                            public juce::ChangeListener
+                            juce::ChangeListener,
+                            juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==============================================================================
@@ -32,6 +33,7 @@ private:
     int position;
     int recordedLengths[4];
     int recMaxLength;
+    int slips[4];
 
     enum { panIndex };
     juce::dsp::ProcessSpec spec;
@@ -51,6 +53,7 @@ private:
     inline void applyPan(int trackIndex, juce::AudioBuffer<float>& outputAudio, int startSample, int numSamples);
     inline void setPan(int trackIndex, float newValue);
     void changeListenerCallback(juce::ChangeBroadcaster* x) override;
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainComponent)
 };
