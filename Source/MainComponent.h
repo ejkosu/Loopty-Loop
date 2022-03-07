@@ -33,6 +33,7 @@ private:
 
     int position;
     int recordedLengths[4];
+    int recMaxLength;
 
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;

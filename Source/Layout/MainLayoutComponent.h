@@ -24,7 +24,8 @@ public:
                         juce::AudioSampleBuffer* fileBuffer,
                         juce::AudioAppComponent* mainComponent,
                         juce::DialogWindow::LaunchOptions& dialogOptions,
-                        juce::AudioThumbnail** thumbnails);
+                        juce::AudioThumbnail** thumbnails,
+                        juce::AudioDeviceManager& manager);
 
     ~MainLayoutComponent() override;
 

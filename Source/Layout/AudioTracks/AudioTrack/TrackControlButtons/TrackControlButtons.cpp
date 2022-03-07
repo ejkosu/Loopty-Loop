@@ -16,7 +16,6 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
 {
     armBtn = std::make_unique<juce::ToggleButton>("Arm");
     muteBtn = std::make_unique<juce::ToggleButton>("Mute");
-    // "Rev" text changed for demonstration of ValueTreeState
     revBtn = std::make_unique<juce::ToggleButton>("Rev");
     soloBtn = std::make_unique<juce::ToggleButton>("Solo");
 
@@ -34,10 +33,12 @@ TrackControlButtons::TrackControlButtons(int id, juce::AudioProcessorValueTreeSt
                                               "solo" + std::to_string(trackId),
                                               *soloBtn));
 
+    // Add custom parameter listener so "Arm" buttons are disabled when recording
+    parameters.addParameterListener("recording", this);
+
     this->armBtn->onClick = [this] {
-        // needs to be debugged using setClickingToggleState(). if recording, just undo this click and return
         bool buttonState = this->armBtn->getToggleState();
-        bool isRecording = (bool)parameters.getParameterAsValue("isRecording").getValue();
+        bool isRecording = (bool)parameters.getParameterAsValue("recording").getValue();
 
         if (buttonState == true && !isRecording)
         {
@@ -103,4 +104,16 @@ void TrackControlButtons::paint(juce::Graphics& g)
 
 void TrackControlButtons::resized()
 {
+}
+
+// Disable "Arm" buttons when recording
+void TrackControlButtons::parameterChanged(const juce::String& parameterID, float newValue) {
+    if (parameterID == "recording" && newValue == 1.0f)
+    {
+        this->armBtn->setEnabled(false);
+    }
+    else
+    {
+        this->armBtn->setEnabled(true);
+    }
 }

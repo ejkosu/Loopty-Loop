@@ -12,7 +12,7 @@
 
 #include <JuceHeader.h>
 
-class TrackControlButtons : public juce::Component
+class TrackControlButtons : public juce::Component, juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==========================================================================
@@ -22,6 +22,8 @@ public:
     //==========================================================================
     void paint(juce::Graphics& g) override;
     void resized() override;
+
+    void parameterChanged(const juce::String &parameterID, float newValue) override;
 
     typedef juce::AudioProcessorValueTreeState::ButtonAttachment ButtonAttachment;
 
