@@ -181,15 +181,24 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                 {
                     // Write the recorded samples to the fxBuffer
                     fxBuffer.clear();
-                    for (auto channel = 0; channel < numOutputChannels; ++channel)
                     {
-                        fxBuffer.addFrom(channel,
-                            0,
-                            recBuffer[i],
-                            channel % numInputChannels,
-                            position,
-                            samplesFromTrack,
-                            gain);
+                        for (auto channel = 0; channel < numOutputChannels; ++channel)
+                        {
+                            auto* inBuffer = recBuffer[i].getReadPointer(channel, 0);
+                            auto* outBuffer = fxBuffer.getWritePointer(channel, 0);
+
+                            for (auto sample = 0; sample < samplesFromTrack; ++sample)
+                            {
+                                if (isReversed)
+                                {
+                                    outBuffer[sample] += inBuffer[recordedLengths[i] - position - sample] * gain;
+                                }
+                                else
+                                {
+                                    outBuffer[sample] += inBuffer[position + sample] * gain;
+                                }
+                            }
+                        }
                     }
 
                     // Apply pan for this track
