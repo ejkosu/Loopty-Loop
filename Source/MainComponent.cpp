@@ -76,13 +76,6 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
     // Save the input if recording
     if (*parameters.getRawParameterValue("recording") == 1.0f)
     {
-        // If we are starting a new recording, clear the thumbnail and set up to
-        // write the waveform for a new one.
-        if (position == 0)
-        {
-            thumbnails[armedTrackIndex]->clear();
-            thumbnails[armedTrackIndex]->reset(numOutputChannels, 44100, 44100 * 30);
-        }
         for (auto channel = 0; channel < maxOutputChannels; ++channel)
         {
             // If this output channel is inactive, do not save the input channel

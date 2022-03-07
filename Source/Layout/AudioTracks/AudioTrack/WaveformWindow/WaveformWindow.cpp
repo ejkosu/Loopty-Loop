@@ -11,10 +11,12 @@
 #include "WaveformWindow.h"
 
 //==============================================================================
-WaveformWindow::WaveformWindow(int t, juce::AudioThumbnail** thumbnails)
+WaveformWindow::WaveformWindow(int t, juce::AudioThumbnail** thumbnails, juce::AudioProcessorValueTreeState& vts)
+    : parameters(vts), trackId(t)
 {
     this->thumbnail = thumbnails[t-1];
     this->thumbnail->addChangeListener(this);
+    parameters.addParameterListener("isRecorded" + std::to_string(trackId), this);
 }
 
 WaveformWindow::~WaveformWindow()
@@ -64,4 +66,15 @@ void WaveformWindow::changeListenerCallback(juce::ChangeBroadcaster* source)
     {
         repaint();
     }
+}
+void WaveformWindow::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    juce::String isRecorded = "isRecorded" + std::to_string(trackId);
+    
+    if (isRecorded.compare(isRecorded) == 0)
+    {
+        thumbnail->clear();
+        thumbnail->reset(2, 44100, 44100 * 30);
+    }
+
 }

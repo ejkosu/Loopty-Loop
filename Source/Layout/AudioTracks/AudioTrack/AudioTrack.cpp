@@ -12,7 +12,7 @@
 
 //==============================================================================
 AudioTrack::AudioTrack(int t, juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
-    : trackWaveformWindow(t, thumbnails),
+    : trackWaveformWindow(t, thumbnails, vts),
       controlButtonsArea(t, vts)
 {
     trackNumber = t;
