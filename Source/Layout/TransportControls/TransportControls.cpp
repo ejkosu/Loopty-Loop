@@ -24,8 +24,6 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
 {
     addAndMakeVisible(transportButtons);
     addAndMakeVisible(loadTrackButton);
-    addAndMakeVisible(loadLoopButton);
-    addAndMakeVisible(saveLoopButton);
     addAndMakeVisible(audioSettingsButton);
 
     loadTrackButton.setButtonText("Load Track");
@@ -74,8 +72,6 @@ void TransportControls::resized()
 
     buttonGrid.items = { juce::GridItem(transportButtons).withMargin(transportMargin).withArea(1, juce::GridItem::Span(4)), 
                          juce::GridItem(loadTrackButton).withMargin(20.0f),
-                         juce::GridItem(loadLoopButton).withMargin(20.0f),
-                         juce::GridItem(saveLoopButton).withMargin(20.0f),
                          juce::GridItem(audioSettingsButton).withMargin(20.0f) };
 
     buttonGrid.performLayout(getLocalBounds());
@@ -165,10 +161,6 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
         perror("No track selected");
     }
 }
-
-void TransportControls::loadLoopButtonClicked() {}
-
-void TransportControls::saveLoopButtonClicked() {}
 
 void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions)
 {
