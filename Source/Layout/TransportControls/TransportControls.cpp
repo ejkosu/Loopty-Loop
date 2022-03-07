@@ -125,7 +125,7 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                         // Resample the audio and write it into fileBuffer
                         const float** inputs = temp.getArrayOfReadPointers();
                         float** outputs = fileBuffer[trackIndex].getArrayOfWritePointers();
-                        for (int c = 0; c < temp.getNumChannels(); c++)
+                        for (int c = 0; (c < temp.getNumChannels() && c < 2); c++)
                         {
                             resampler->reset();
                             resampler->process(ratio, inputs[c], outputs[c], fileBuffer[trackIndex].getNumSamples());
