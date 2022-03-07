@@ -12,11 +12,15 @@
 
 #include <JuceHeader.h>
 
-class WaveformWindow : public juce::Component, private juce::ChangeListener
+class WaveformWindow : public juce::Component, 
+                       private juce::ChangeListener,
+                       private juce::AudioProcessorValueTreeState::Listener
 {
 public:
     //==========================================================================
-    WaveformWindow(int t, juce::AudioThumbnail** thumbnails);
+    WaveformWindow(int t, juce::AudioThumbnail** thumbnails, 
+                   juce::AudioProcessorValueTreeState& vts,
+                   juce::AudioDeviceManager& manager);
     ~WaveformWindow();
 
     //==========================================================================
@@ -26,11 +30,15 @@ public:
 
 private:
     
+    int trackId;
     juce::Component waveformWindow;
     juce::AudioThumbnail* thumbnail;
+    juce::AudioProcessorValueTreeState& parameters;
+    juce::AudioDeviceManager& deviceManager;
 
     void drawEmptyWindow(juce::Graphics& g, juce::Rectangle<int>& waveformBounds);
     void drawWaveform(juce::Graphics& g, juce::Rectangle<int>& waveformBounds);
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WaveformWindow)
 };
