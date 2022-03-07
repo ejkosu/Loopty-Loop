@@ -98,13 +98,35 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
                     auto duration = (float)reader->lengthInSamples / reader->sampleRate;
                     if (duration < 30)
                     {
-                        fileBuffer[trackIndex].setSize(2, (int)reader->lengthInSamples);
-                        reader->read(&fileBuffer[trackIndex],
-                            0,
-                            (int)reader->lengthInSamples,
-                            0,
-                            true,
-                            true);
+                        // File reading / resampling based on this forum thread:
+                        // https://forum.juce.com/t/resampling-an-audiosamplebuffer/14287/7
+                        juce::AudioSampleBuffer temp;
+                        juce::ScopedPointer<juce::LagrangeInterpolator> resampler = new juce::LagrangeInterpolator();
+                        double ratio = reader->sampleRate / 48000.0;
+
+                        // Setup the temp buffer and fileBuffer
+                        temp.setSize((int)reader->numChannels, (int)reader->lengthInSamples);
+                        temp.clear();
+                        fileBuffer[trackIndex].setSize(2, (int)(((double)reader->lengthInSamples) / ratio));
+                        fileBuffer[trackIndex].clear();
+
+                        // Read the file into the temp buffer
+                        reader->read(&temp, 0, (int)reader->lengthInSamples, 0, true, true);
+
+                        // Resample the audio and write it into fileBuffer
+                        const float** inputs = temp.getArrayOfReadPointers();
+                        float** outputs = fileBuffer[trackIndex].getArrayOfWritePointers();
+                        for (int c = 0; c < temp.getNumChannels(); c++)
+                        {
+                            resampler->reset();
+                            resampler->process(ratio, inputs[c], outputs[c], fileBuffer[trackIndex].getNumSamples());
+                        }
+                        
+                        // If the file was mono, double it across both channels
+                        if (temp.getNumChannels() == 1)
+                        {
+                            resampler->process(ratio, inputs[0], outputs[1], fileBuffer[trackIndex].getNumSamples());
+                        }
 
                         // Update the VTS so the track does not use its recorded buffer
                         juce::Value isRecorded = parameters.getParameterAsValue("isRecorded" + std::to_string(trackIndex + 1));
