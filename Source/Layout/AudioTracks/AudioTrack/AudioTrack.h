@@ -19,7 +19,8 @@ class AudioTrack : public juce::Component
 {
 public:
     //==========================================================================
-    AudioTrack(int t, juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails);
+    AudioTrack(int t, juce::AudioProcessorValueTreeState& vts, 
+               juce::AudioThumbnail** thumbnails, juce::AudioDeviceManager& manager);
     ~AudioTrack();
 
     //==========================================================================
