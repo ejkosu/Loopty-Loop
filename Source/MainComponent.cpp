@@ -2,7 +2,7 @@
 
 //==============================================================================
 MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::AudioThumbnail** thumbnails)
-    : mainLayout(vts, fileBuffer, this, dialogOptions, thumbnails, deviceManager),
+    : mainLayout(vts, fileBuffer, this, thumbnails, deviceManager),
       juce::AudioAppComponent(deviceManager),
       parameters(vts),
       fxChains(),
@@ -31,14 +31,7 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
     parameters.addParameterListener("solo3", this);
     parameters.addParameterListener("solo4", this);
 
-    // Set up for the audio device manager. We'll display this in a DialogWindow.
     deviceManager.initialise(2, 2, nullptr, true);
-    deviceManager.addChangeListener(this);
-    audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
-    audioSettings->setSize(600, 500);
-    dialogOptions.dialogTitle = juce::String("Audio Settings");
-    dialogOptions.dialogBackgroundColour = juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
-    dialogOptions.content.set(&*audioSettings, false);
 
     addAndMakeVisible(mainLayout);
 

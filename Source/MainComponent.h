@@ -42,8 +42,6 @@ private:
 
     MainLayoutComponent mainLayout;
     juce::AudioDeviceManager deviceManager;
-    std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;
-    juce::DialogWindow::LaunchOptions dialogOptions;
     juce::AudioProcessorValueTreeState& parameters;
     juce::AudioThumbnail** thumbnails;
 
