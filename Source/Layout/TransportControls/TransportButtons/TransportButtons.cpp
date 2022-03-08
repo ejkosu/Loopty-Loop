@@ -14,12 +14,10 @@
 TransportButtons::TransportButtons(juce::AudioProcessorValueTreeState& vts)
     : parameters(vts)
 {
-    rewindBtn = std::make_unique<RewindButton>(juce::String("Rewind"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
     stopBtn = std::make_unique<StopButton>(juce::String("Stop"), juce::Colours::black, juce::Colours::black, juce::Colours::black);
     playBtn = std::make_unique<PlayButton>(juce::String("Play"), juce::Colours::green, juce::Colours::green, juce::Colours::green);
     recordBtn = std::make_unique<RecordButton>(juce::String("Record"), juce::Colours::red, juce::Colours::red, juce::Colours::red);
 
-    addAndMakeVisible(*rewindBtn);
     addAndMakeVisible(*stopBtn);
     addAndMakeVisible(*playBtn);
     addAndMakeVisible(*recordBtn);
@@ -83,11 +81,9 @@ void TransportButtons::resized()
     using Fr = juce::Grid::Fr;
 
     transportGrid.templateRows = { Track(Fr(1)) };
-    transportGrid.templateColumns = { Track(Fr(1)), Track(Fr(1)),
-                                      Track(Fr(1)), Track(Fr(1)) };
+    transportGrid.templateColumns = { Track(Fr(1)), Track(Fr(1)), Track(Fr(1)) };
 
-    transportGrid.items = { juce::GridItem(*rewindBtn), 
-                            juce::GridItem(*stopBtn),
+    transportGrid.items = { juce::GridItem(*stopBtn),
                             juce::GridItem(*playBtn),
                             juce::GridItem(*recordBtn) };
 
