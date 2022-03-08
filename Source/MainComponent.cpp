@@ -6,7 +6,8 @@ MainComponent::MainComponent(juce::AudioProcessorValueTreeState& vts, juce::Audi
       juce::AudioAppComponent(deviceManager),
       parameters(vts),
       fxChains(),
-      slips()
+      slips(),
+      recordedLengths()
 {
     this->thumbnails = thumbnails;
     position = 0;
@@ -115,8 +116,12 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
 
                     for (auto sample = 0; (sample < outputSamplesRemaining) && (sample < recMaxLength); ++sample)
                     {
-                        outBuffer[sample] = inBuffer[sample];
-                        ++recSamplesWritten;
+                        // add a bounds check here
+                        if (position + sample < recMaxLength)
+                        {
+                            outBuffer[sample] = inBuffer[sample];
+                            ++recSamplesWritten;
+                        }
                     }
 
                     // addBlock writes all channels to the thumbnail at once, so we want
@@ -127,7 +132,10 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
                     }
 
                     // Update the length in num. of samples for this recorded buffer
-                    recordedLengths[armedTrackIndex] = position + recSamplesWritten;
+                    if (recordedLengths[armedTrackIndex] < position + recSamplesWritten)
+                    {
+                        recordedLengths[armedTrackIndex] = position + recSamplesWritten;
+                    }
                     bufferToFill.buffer->clear(channel, outputSamplesOffset, outputSamplesRemaining);
                 }
             }
