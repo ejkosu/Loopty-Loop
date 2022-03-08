@@ -20,7 +20,6 @@ public:
     TransportControls(juce::AudioProcessorValueTreeState& vts, 
                       juce::AudioSampleBuffer* fileBuffer,
                       juce::AudioAppComponent* mainComponent,
-                      juce::DialogWindow::LaunchOptions& dialogOptions,
                       juce::AudioThumbnail** thumbnails,
                       juce::AudioDeviceManager& manager);
 
@@ -42,13 +41,15 @@ private:
     juce::AudioFormatManager formatManager;
     juce::AudioDeviceManager& deviceManager;
     juce::AudioProcessorValueTreeState& parameters;
+    std::unique_ptr<juce::AudioDeviceSelectorComponent> audioSettings;
+    juce::DialogWindow::LaunchOptions dialogOptions;
 
     void loadTrackButtonClicked(juce::AudioProcessorValueTreeState& vts,
                                 juce::AudioSampleBuffer* fileBuffer,
                                 juce::AudioAppComponent* mainComponent,
                                 juce::AudioThumbnail** thumbnails);
 
-    void audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions);
+    void audioSettingsButtonClicked();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(TransportControls)
 };

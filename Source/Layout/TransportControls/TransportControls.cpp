@@ -15,7 +15,6 @@
 TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
                                      juce::AudioSampleBuffer* fileBuffer,
                                      juce::AudioAppComponent* mainComponent,
-                                     juce::DialogWindow::LaunchOptions& dialogOptions,
                                      juce::AudioThumbnail** thumbnails,
                                      juce::AudioDeviceManager& manager)
     : parameters(vts),
@@ -30,7 +29,7 @@ TransportControls::TransportControls(juce::AudioProcessorValueTreeState& vts,
     loadTrackButton.onClick = [this, &vts, fileBuffer, mainComponent, thumbnails] {loadTrackButtonClicked(vts, fileBuffer, mainComponent, thumbnails); };
 
     audioSettingsButton.setButtonText("Audio Settings");
-    audioSettingsButton.onClick = [this, &dialogOptions] {audioSettingsButtonClicked(dialogOptions); };
+    audioSettingsButton.onClick = [this] {audioSettingsButtonClicked(); };
     formatManager.registerBasicFormats();
 
     // Add custom parameter listener so Load Track button is disabled while recording
@@ -158,8 +157,15 @@ void TransportControls::loadTrackButtonClicked(juce::AudioProcessorValueTreeStat
     }
 }
 
-void TransportControls::audioSettingsButtonClicked(juce::DialogWindow::LaunchOptions& dialogOptions)
+void TransportControls::audioSettingsButtonClicked()
 {
+    // Set up for the audio device manager. We'll display this in a DialogWindow.
+    deviceManager.initialise(2, 2, nullptr, true);
+    audioSettings.reset(new juce::AudioDeviceSelectorComponent(deviceManager, 0, 2, 0, 2, false, false, true, true));
+    audioSettings->setSize(600, 500);
+    dialogOptions.dialogTitle = juce::String("Audio Settings");
+    dialogOptions.dialogBackgroundColour = juce::Desktop::getInstance().getDefaultLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId);
+    dialogOptions.content.set(&*audioSettings, false);
     dialogOptions.launchAsync();
 
     juce::Value playback = parameters.getParameterAsValue("playback");
