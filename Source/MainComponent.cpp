@@ -116,7 +116,6 @@ void MainComponent::getNextAudioBlock(const juce::AudioSourceChannelInfo& buffer
 
                     for (auto sample = 0; (sample < outputSamplesRemaining) && (sample < recMaxLength); ++sample)
                     {
-                        // add a bounds check here
                         if (position + sample < recMaxLength)
                         {
                             outBuffer[sample] = inBuffer[sample];
