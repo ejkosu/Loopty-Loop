@@ -4,6 +4,8 @@
 ## Overview
 Loopty Loop is a desktop audio looping sampler built as a Computer Science project in a three-person team. It supports both live recording and file uploading for up to four tracks, and allows for realtime adjustment of various track parameters. It is built for Windows using the [JUCE framework](https://juce.com/).
 
+This repository is a fork of the original repository used during development, with no changes besides this README.
+
 ## Controls
 1. To add audio to a track, first check the "Arm" checkbox for the desired track.
 2. Then, you may either click the red record button to start recording from audio input. Or, click "Load Track" to select an audio file.
